@@ -3,9 +3,9 @@
     <default>
         <generalapi>
             <general>
-                <content-type>application/json</content-type>
-                <content-length>500</content-length>
-                <return-transfer>1</return-transfer>
+                <contentType>application/json</contentType>
+                <contentLength>500</contentLength>
+                <returnTransfer>1</returnTransfer>
                 <port>8080</port>
                 <url>example.com</url>
             </general>

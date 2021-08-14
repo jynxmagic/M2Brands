@@ -21,9 +21,9 @@ class Index extends Template
 
     public function res()
     {
-        $this->_curl->addHeader(CURLINFO_CONTENT_TYPE, $this->_helper->getConfigFor("content-type"));
-        $this->_curl->addHeader("Content-Length", $this->_helper->getConfigFor("content-length"));
-        $this->_curl->setOption(CURLOPT_RETURNTRANSFER, $this->_helper->getConfigFor("return-transfer"));
+        $this->_curl->addHeader(CURLINFO_CONTENT_TYPE, $this->_helper->getConfigFor("contentType"));
+        $this->_curl->addHeader("Content-Length", $this->_helper->getConfigFor("contentLength"));
+        $this->_curl->setOption(CURLOPT_RETURNTRANSFER, $this->_helper->getConfigFor("returnTransfer"));
         $this->_curl->setOption(CURLOPT_PORT, $this->_helper->getConfigFor("port"));
         $this->_curl->get($this->_helper->getConfigFor("url"));
         return $this->_curl->getBody();
