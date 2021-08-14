@@ -17,10 +17,10 @@ class Data extends AbstractHelper
     const XML_PATH_CONFIG = 'generalapiconfig/generalgroup/';
 
     public function __construct(
-	    ScopeConfigInterface $scopeConfig, 
-	    Context $context)
-    {
-	parent::__construct($context);
+        ScopeConfigInterface $scopeConfig,
+        Context $context
+    ) {
+        parent::__construct($context);
         $this->scopeConfig = $scopeConfig;
     }
 
@@ -33,4 +33,3 @@ class Data extends AbstractHelper
         );
     }
 }
-

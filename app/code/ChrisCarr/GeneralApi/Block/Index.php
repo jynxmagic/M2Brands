@@ -9,19 +9,18 @@ use \ChrisCarr\GeneralApi\Helper\Data;
 class Index extends Template
 {
 
-	protected $curl;
+    protected $curl;
 
-	protected $helper;
+    protected $helper;
 
-	public function __construct(
-		Context $context, 
-		Curl $curl, 
-		Data $hdata
-	)
-    {
+    public function __construct(
+        Context $context,
+        Curl $curl,
+        Data $hdata
+    ) {
         $this->curl = $curl;
-	$this->helper = $hdata;
-	parent::__construct($context);
+        $this->helper = $hdata;
+        parent::__construct($context);
     }
 
     public function res()
@@ -32,7 +31,7 @@ class Index extends Template
         $this->curl->setOption(CURLOPT_PORT, $this->helper->getConfigFor("port"));
         $this->curl->get($this->helper->getConfigFor("url"));
 
-	$opts = [
+        $opts = [
             "content-type" => $this->helper->getConfigFor("contentType"),
             "content-length" => $this->helper->getConfigFor("contentLength"),
             "returnTransfer" => $this->helper->getConfigFor("returnTransfer"),
