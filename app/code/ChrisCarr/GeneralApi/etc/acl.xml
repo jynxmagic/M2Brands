@@ -6,7 +6,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="ChrisCarr_GeneralApi::generalapi_configuration" title="General API" />
+                            <resource id="ChrisCarr_GeneralApi::config" title="General API" sortOrder="30"/>
                         </resource>
                     </resource>
                 </resource>
