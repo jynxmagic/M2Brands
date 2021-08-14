@@ -20,7 +20,6 @@
                 </field>
                 <field id="returnTransfer" translate="label">
                     <label>Return Transfer</label>
-                    <type>select</type>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="port" translate="label">
