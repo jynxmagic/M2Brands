@@ -1,32 +1,32 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="chriscarr" translate="label" sortOrder="1">
+        <tab id="chriscarrsystemconfig" translate="label" sortOrder="10">
             <label>Chris Carr</label>
         </tab>
-        <section id="generalapi" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
-            <class>separator-top</class>
+        <section id="generalapiconfig" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>General API</label>
-            <tab>chriscarr</tab>
+            <tab>chriscarrsystemconfig</tab>
             <resource>ChrisCarr_GeneralApi::config</resource>
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="generalgroup" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
-                <field id="contentType" translate="label">
+                <comment>Configure the curl client as required.</comment>
+                <field id="contentType" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Content Type</label>
                 </field>
-                <field id="contentLength" translate="label">
+                <field id="contentLength" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Content Length</label>
                     <validate>integer</validate>
                 </field>
-                <field id="returnTransfer" translate="label">
+                <field id="returnTransfer" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Return Transfer</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="port" translate="label">
+                <field id="port" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Port</label>
                     <validate>integer</validate>
                 </field>
-                <field id="url" translate="label">
+                <field id="url" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>URL</label>
                     <validate>validate-clean-url</validate>
                 </field>
