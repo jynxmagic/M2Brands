@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <generalapi>
+            <general>
+                <content-type>application/json</content-type>
+                <content-length>500</content-length>
+                <return-transfer>1</return-transfer>
+                <port>8080</port>
+                <url>example.com</url>
+            </general>
+        </generalapi>
+    </default>
+</config>
