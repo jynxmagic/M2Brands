@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace ChrisCarr\GeneralApi\Controller\Index;
 
-use Magento\Framework\View\Result\Page;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\Raw;
+use Magento\Framework\Controller\Result\RawFactory;
 
 /**
  * Class Index
@@ -15,30 +15,38 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 class Index implements HttpGetActionInterface
 {
 
-    /**
-     * Index resultPageFactory
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
     protected $requestInterface;
+    /**
+     * @var RawFactory
+     */
+    protected $resultRawFactory;
+
+    protected $block;
+
 
     /**
      * Index constructor.
-     * @param PageFactory $resultPageFactory
+     * @param RawFactory $jsonFactory
      * @param RequestInterface $requestInterface
      */
-    public function __construct(PageFactory $resultPageFactory, RequestInterface $requestInterface)
-    {
-        $this->resultPageFactory = $resultPageFactory;
+    public function __construct(
+        RawFactory                        $resultRawFactory,
+        RequestInterface                  $requestInterface,
+        \ChrisCarr\GeneralApi\Block\Index $block
+    ) {
+        $this->resultRawFactory = $resultRawFactory;
         $this->requestInterface = $requestInterface;
+        $this->block = $block;
     }
 
     /**
      * Function execute
-     * @return Page
+     * @return Raw
      */
     public function execute()
     {
-        return $this->resultPageFactory->create();
+        $res = $this->resultRawFactory->create();
+        $res->setContents($this->block->res());
+        return $res;
     }
 }

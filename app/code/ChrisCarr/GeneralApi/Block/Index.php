@@ -1,36 +1,30 @@
 <?php
+
 namespace ChrisCarr\GeneralApi\Block;
 
-use \Magento\Framework\HTTP\Client\Curl;
-use \Magento\Framework\View\Element\Template;
-use \Magento\Framework\View\Element\Template\Context;
-use \ChrisCarr\GeneralApi\Helper\Data;
+use ChrisCarr\GeneralApi\Helper\Data;
+use Magento\Framework\HTTP\Client\Curl;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 class Index extends Template
 {
 
     protected $curl;
-
     protected $helper;
 
     public function __construct(
         Context $context,
-        Curl $curl,
-        Data $hdata
+        Curl    $curl,
+        Data    $helper
     ) {
         $this->curl = $curl;
-        $this->helper = $hdata;
+        $this->helper = $helper;
         parent::__construct($context);
     }
 
     public function res()
     {
-        $this->curl->addHeader(CURLINFO_CONTENT_TYPE, $this->helper->getConfigFor("contentType"));
-        $this->curl->addHeader("Content-Length", $this->helper->getConfigFor("contentLength"));
-        $this->curl->setOption(CURLOPT_RETURNTRANSFER, $this->helper->getConfigFor("returnTransfer"));
-        $this->curl->setOption(CURLOPT_PORT, $this->helper->getConfigFor("port"));
-        $this->curl->get($this->helper->getConfigFor("url"));
-
         $opts = [
             "content-type" => $this->helper->getConfigFor("contentType"),
             "content-length" => $this->helper->getConfigFor("contentLength"),
@@ -39,6 +33,13 @@ class Index extends Template
             "url" => $this->helper->getConfigFor("url")
         ];
 
-        return $opts;
+        $this->curl->setOption(CURLOPT_ACCEPT_ENCODING, $opts["content-type"]);
+        $this->curl->setOption(CURLOPT_RETURNTRANSFER, $opts["returnTransfer"]);
+        $this->curl->setOption(CURLOPT_PORT, $opts["port"]);
+        $this->curl->setOption(CURLOPT_TIMEOUT, 30);
+        $this->curl->setOption(CURLOPT_FOLLOWLOCATION, false);
+        $this->curl->get($opts["url"]);
+
+        return $this->curl->getBody();
     }
 }
