@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="chriscarrsystemconfig" translate="label" sortOrder="10">
+            <label>Chris Carr</label>
+        </tab>
+        <section id="adminhtmlhttpclientconfig" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>General API</label>
+            <tab>chriscarrsystemconfig</tab>
+            <resource>ChrisCarr_AdminhtmlHttpClient::config</resource>
+            <group id="generalgroup" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General Configuration</label>
+                <comment>Configure the curl client as required.</comment>
+                <field type="select" id="contentType" translate="label" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Content Type</label>
+                    <source_model>ChrisCarr\AdminhtmlHttpClient\Model\Adminhtml\ContentTypeOptions</source_model>
+                </field>
+                <field type="text" id="contentLength" translate="label" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Content Length</label>
+                    <validate>integer</validate>
+                </field>
+                <field type="select" id="returnTransfer" translate="label" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Return Transfer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field type="text" id="port" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Port</label>
+                    <validate>integer</validate>
+                </field>
+                <field type="text" id="url" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL</label>
+                    <validate>validate-url</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

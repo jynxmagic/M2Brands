@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
-    <menu>
-        <add id="ChrisCarr_GeneralApi::menuitem" title="Chris Carr" module="ChrisCarr_GeneralApi" sortOrder="1" resource="ChrisCarr_GeneralApi::config" />
-        <add id="ChrisCarr_GeneralApi::generalapi_configuration_opts" title="Configuration"  module="ChrisCarr_GeneralApi" sortOrder="99" parent="ChrisCarr_GeneralApi::menuitem" action="adminhtml/system_config/edit/section/generalapi" resource="ChrisCarr_GeneralApi::config"/>
-    </menu>
-</config>
