@@ -3,23 +3,29 @@
 namespace ChrisCarr\AdminhtmlHttpClient\Block;
 
 use ChrisCarr\AdminhtmlHttpClient\Helper\Data;
-use Magento\Framework\HTTP\Client\Curl;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientFactory;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Framework\Webapi\Request;
 
 class Index extends Template
 {
+    protected $clientFactory;
+    protected $responseFactory;
 
-    protected $curl;
     protected $helper;
 
-
     public function __construct(
-        Context $context,
-        Curl    $curl,
-        Data    $helper
+        Context         $context,
+        Data            $helper,
+        ClientFactory   $clientFactory,
+        ResponseFactory $responseFactory
     ) {
-        $this->curl = $curl;
+        $this->clientFactory = $clientFactory;
+        $this->responseFactory = $responseFactory;
         $this->helper = $helper;
         parent::__construct($context);
     }
@@ -34,18 +40,31 @@ class Index extends Template
             "url" => $this->helper->getConfigFor("url")
         ];
 
-        $this->curl->setOption(CURLOPT_ACCEPT_ENCODING, $opts["content-type"]);
-        $this->curl->setOption(CURLOPT_RETURNTRANSFER, $opts["returnTransfer"]);
-        $this->curl->setOption(CURLOPT_PORT, $opts["port"]);
-        $this->curl->setOption(CURLOPT_TIMEOUT, 30);
-        $this->curl->setOption(CURLOPT_FOLLOWLOCATION, false);
-        $this->curl->get($opts["url"]);
+        /**
+         * @var Client $client
+         */
+        $client = $this->clientFactory->create([
+            "config" => [
+                "base_uri" => $opts["url"]
+            ]
+        ]);
 
-        return $this->curl->getBody();
-    }
+        try {
+            $res = $client->request(
+                Request::METHOD_GET,
+                '',
+                [
+                    "headers" => ["Accept-Encoding" => $opts["content-type"]],
 
-    public function tests()
-    {
-        return __("big tests");
+                ]
+            );
+        } catch (GuzzleException $e) {
+            $res = $this->responseFactory->create([
+                "status" => $e->getCode(),
+                "reason" => $e->getMessage()
+            ]);
+        }
+
+        return $res->getBody();
     }
 }
