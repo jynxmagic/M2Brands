@@ -18,7 +18,7 @@
     <settings>
         <buttons>
             <button name="add">
-                <url path="*/*/create"/>
+                <url path="*/create"/>
                 <class>primary</class>
                 <label translate="true">Add new Logo</label>
             </button>

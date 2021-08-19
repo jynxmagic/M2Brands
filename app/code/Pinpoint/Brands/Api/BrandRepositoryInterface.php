@@ -31,4 +31,6 @@ interface BrandRepositoryInterface
      * @return BrandSearchResultInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
+
+    public function create();
 }
