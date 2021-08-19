@@ -5,9 +5,9 @@
         <add id="ChrisCarr_AdminhtmlHttpClient::menuitem" title="Chris Carr" module="ChrisCarr_AdminhtmlHttpClient"
              sortOrder="1"
              resource="ChrisCarr_AdminhtmlHttpClient::config"/>
-        <add id="ChrisCarr_AdminhtmlHttpClient::adminhtmlhttpclient_configuration_opts" title="Configuration"
-             module="ChrisCarr_GeneralApi" sortOrder="99" parent="ChrisCarr_AdminhtmlHttpClient::menuitem"
-             action="adminhtml/system_config/edit/section/adminhtmlhttpclientconfig"
+        <add id="ChrisCarr_AdminhtmlHttpClient::adminhtmlhttpclient_opts" title="Configuration"
+             module="ChrisCarr_AdminhtmlHttpClient" sortOrder="99" parent="ChrisCarr_AdminhtmlHttpClient::menuitem"
+             action="adminhtml/system_config/edit/section/adminhtmlhttpclientconfig/"
              resource="ChrisCarr_AdminhtmlHttpClient::config"/>
     </menu>
 </config>
