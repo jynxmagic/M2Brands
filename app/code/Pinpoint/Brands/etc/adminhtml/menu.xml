@@ -5,7 +5,7 @@
         <add id="Pinpoint_Brands::content_logomanager" title="Logo Manager" module="Pinpoint_Brands" sortOrder="50"
              resource="Pinpoint_Brands::content_logomanager" parent="Magento_Backend::content"/>
         <add id="Pinpoint_Brands::logomanager_managelogos" title="Manage Logos" module="Pinpoint_Brands" sortOrder="50"
-             resource="Pinpoint_Brands::content_logomanager" action="cms/block/create"
+             resource="Pinpoint_Brands::content_logomanager" action="managelogos/view"
              parent="Pinpoint_Brands::content_logomanager"/>
     </menu>
 </config>

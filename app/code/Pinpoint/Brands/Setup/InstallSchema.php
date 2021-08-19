@@ -2,6 +2,7 @@
 
 namespace Pinpoint\Brands\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
@@ -19,41 +20,27 @@ class InstallSchema implements InstallSchemaInterface
         $installer = $setup;
         $installer->startSetup();
 
-        //START table setup
-        //        $table = $installer->getConnection()->newTable(
-        //            $installer->getTable('kavinga')
-        //        )->addColumn(
-        //            'kid',
-        //            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-        //            null,
-        //            ['identity' => true, 'nullable' => false, 'primary' => true, 'unsigned' => true,],
-        //            'Entity ID'
-        //        )->addColumn(
-        //            'title',
-        //            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-        //            255,
-        //            ['nullable' => false,],
-        //            'Demo Title'
-        //        )->addColumn(
-        //            'creation_time',
-        //            \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
-        //            null,
-        //            ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT,],
-        //            'Creation Time'
-        //        )->addColumn(
-        //            'update_time',
-        //            \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
-        //            null,
-        //            ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE,],
-        //            'Modification Time'
-        //        )->addColumn(
-        //            'is_active',
-        //            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-        //            null,
-        //            ['nullable' => false, 'default' => '1',],
-        //            'Is Active'
-        //        );
-        //        $installer->getConnection()->createTable($table);
-        //        //END   table setup
+        $table = $installer->getConnection()->newTable(
+            $installer->getTable("brand_entity")
+        );
+
+        $table->addColumn(
+            "id",
+            Table::TYPE_INTEGER,
+            null,
+            ['identity' => true, 'nullable' => false, 'primary' => true, 'unsigned' => true,]
+        );
+
+        $table->addColumn(
+            "title",
+            Table::TYPE_TEXT,
+            255,
+            ['nullable' => false],
+            "Brand Title"
+        );
+
+        $installer->getConnection()->createTable($table);
+
+        $installer->endSetup();
     }
 }
