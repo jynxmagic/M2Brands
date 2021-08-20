@@ -1,26 +1,17 @@
 <?php
 
-namespace Pinpoint\Brands\Controller\Adminhtml\Category\Image;
+namespace Pinpoint\Brands\Controller\Adminhtml\Image;
 
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Catalog\Model\ImageUploader;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
-use Magento\Framework\Filesystem;
-use Magento\Framework\Filesystem\Directory\WriteInterface;
-use Magento\MediaStorage\Helper\File\Storage\Database;
-use Magento\MediaStorage\Model\File\UploaderFactory;
-use Magento\Store\Model\StoreManagerInterface;
-use Psr\Log\LoggerInterface;
+use Pinpoint\Brands\Model\ImageUploader;
 
-/**
- * Agorae Adminhtml Category Image Upload Controller
- */
-class Upload extends Action
+class Upload extends Action implements HttpPostActionInterface
 {
     /**
      * Image uploader
@@ -28,34 +19,6 @@ class Upload extends Action
      * @var ImageUploader
      */
     protected $imageUploader;
-    /**
-     * Media directory object (writable).
-     *
-     * @var WriteInterface
-     */
-    protected $mediaDirectory;
-    /**
-     * Store manager
-     *
-     * @var StoreManagerInterface
-     */
-    protected $storeManager;
-    /**
-     * Core file storage database
-     *
-     * @var Database
-     */
-    protected $coreFileStorageDatabase;
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-    /**
-     * Uploader factory
-     *
-     * @var UploaderFactory
-     */
-    private $uploaderFactory;
 
     /**
      * Upload constructor.
@@ -65,21 +28,11 @@ class Upload extends Action
      * @throws FileSystemException
      */
     public function __construct(
-        Context               $context,
-        ImageUploader         $imageUploader,
-        UploaderFactory       $uploaderFactory,
-        Filesystem            $filesystem,
-        StoreManagerInterface $storeManager,
-        Database              $coreFileStorageDatabase,
-        LoggerInterface       $logger
+        Context       $context,
+        ImageUploader $imageUploader
     ) {
         parent::__construct($context);
         $this->imageUploader = $imageUploader;
-        $this->uploaderFactory = $uploaderFactory;
-        $this->mediaDirectory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
-        $this->storeManager = $storeManager;
-        $this->coreFileStorageDatabase = $coreFileStorageDatabase;
-        $this->logger = $logger;
     }
 
     /**
@@ -89,8 +42,9 @@ class Upload extends Action
      */
     public function execute()
     {
+        $imageId = $this->getRequest()->getParam('param_name', 'desktop_image');
         try {
-            $result = $this->imageUploader->saveFileToTmpDir('custom_image');
+            $result = $this->imageUploader->saveFileToTmpDir($imageId);
             $result['cookie'] = [
                 'name' => $this->_getSession()->getName(),
                 'value' => $this->_getSession()->getSessionId(),

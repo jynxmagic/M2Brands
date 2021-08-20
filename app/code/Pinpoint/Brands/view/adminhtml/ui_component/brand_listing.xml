@@ -57,7 +57,7 @@
                 <indexField>id</indexField>
             </settings>
         </selectionsColumn>
-        <column name="id">
+        <column name="entity_id">
             <settings>
                 <filter>text</filter>
                 <label translate="true">ID</label>
@@ -70,6 +70,31 @@
                 <label translate="true">Title</label>
                 <sorting>asc</sorting>
             </settings>
+        </column>
+        <column name="description">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Description</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="alt_text">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Alt</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="desktop_image" class="Pinpoint\Brands\Ui\Component\Grid\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">title</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Desktop Image</item>
+                </item>
+            </argument>
         </column>
         <actionsColumn name="actions" class="Magento\Sales\Ui\Component\Listing\Column\ViewAction">
             <argument name="data" xsi:type="array">

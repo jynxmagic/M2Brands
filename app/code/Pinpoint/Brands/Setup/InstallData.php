@@ -2,8 +2,6 @@
 
 namespace Pinpoint\Brands\Setup;
 
-use Magento\Catalog\Model\Product\Attribute\Frontend\Image;
-use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -40,24 +38,24 @@ class InstallData implements InstallDataInterface
             /**
              * @var BrandSetup $brandSetup
              */
-            $brandSetup = $this->brandSetupFactory->create(["setup" => $setup]);
+            /*     $brandSetup = $this->brandSetupFactory->create(["setup" => $setup]);
 
-            $brandSetup->installEntities();
+                 $brandSetup->installEntities();
 
-            $brandSetup->addAttribute(
-                "brand_entity",
-                "desktop_image",
-                [
-                    "type" => 'varchar',
-                    "label" => "Desktop Image",
-                    "input" => "image",
-                    'frontend' => Image::class,
-                    "backend" => "Pinpoint\Brands\Model\Brand\Attribute\Backend\Image",
-                    "required" => true,
-                    "sort_order" => 3,
-                    "global" => ScopedAttributeInterface::SCOPE_STORE
-                ]
-            );
+                 $brandSetup->addAttribute(
+                     "brand_entity",
+                     "desktop_image",
+                     [
+                         "type" => 'varchar',
+                         "label" => "Desktop Image",
+                         "input" => "image",
+                         'frontend' => Image::class,
+                         "backend" => "Pinpoint\Brands\Model\Brand\Attribute\Backend\Image",
+                         "required" => true,
+                         "sort_order" => 3,
+                         "global" => ScopedAttributeInterface::SCOPE_STORE
+                     ]
+                 ); */
         }
 
         $setup->endSetup();

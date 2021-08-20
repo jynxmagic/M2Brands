@@ -22,12 +22,14 @@ class Index extends Action implements HttpPostActionInterface
     /**
      * @var BrandRepositoryInterface $brandRepository
      */
-    private $brandRepository;
+    protected $brandRepository;
+
 
     /**
      * @var RedirectFactory $redirectFactory
      */
-    private $redirectFactory;
+    protected $redirectFactory;
+
 
     public function __construct(
         Context                  $context,

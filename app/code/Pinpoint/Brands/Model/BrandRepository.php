@@ -37,18 +37,25 @@ class BrandRepository implements BrandRepositoryInterface
      */
     private $collectionProcessor;
 
+    /**
+     * @var ImageUploader
+     */
+    private $imageUploader;
+
     public function __construct(
         EntityManager                     $entityManager,
         BrandFactory                      $brandFactory,
         CollectionFactory                 $brandCollectionFactory,
         BrandSearchResultInterfaceFactory $brandSearchResultInterfaceFactory,
-        CollectionProcessorInterface      $collectionProcessor
+        CollectionProcessorInterface      $collectionProcessor,
+        ImageUploader                     $imageUploader
     ) {
         $this->brandFactory = $brandFactory;
         $this->brandCollectionFactory = $brandCollectionFactory;
         $this->brandSearchResultInterfaceFactory = $brandSearchResultInterfaceFactory;
         $this->collectionProcessor = $collectionProcessor;
         $this->entityManager = $entityManager;
+        $this->imageUploader = $imageUploader;
     }
 
     /**
@@ -72,6 +79,18 @@ class BrandRepository implements BrandRepositoryInterface
      */
     public function save(BrandInterface $brand)
     {
+        if ($brand["desktop_image"]) {
+
+            $this->imageUploader->moveFileFromTmp($brand["desktop_image"][0]['name']);
+
+            $img_uri = $this->imageUploader->getFilePath(
+                $this->imageUploader->getBasePath(),
+                $brand["desktop_image"][0]['name']
+            );
+
+            $brand['desktop_image'] = $img_uri;
+        }
+
         $this->entityManager->save($brand);
         return $brand;
     }
