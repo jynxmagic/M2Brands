@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Pinpoint\Brands\Api\BrandRepositoryInterface" type="Pinpoint\Brands\Model\BrandRepository"/>
+    <preference for="Pinpoint\Brands\Api\Data\BrandInterface" type="Pinpoint\Brands\Model\Brand"/>
+    <preference for="Pinpoint\Brands\Api\Data\BrandSearchResultInterface" type="Magento\Framework\Api\SearchResults"/>
+
+
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item xsi:type="string" name="Pinpoint\Brands\Api\Data\BrandInterface">
+                    Pinpoint\Brands\Api\BrandRepositoryInterface
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Pinpoint\Brands\Api\Data\BrandInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">brand_entity</item>
+                    <item name="identifierField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument xsi:type="array" name="hydrators">
+                <item name="Pinpoint\Brands\Api\Data\BrandInterface" xsi:type="string">
+                    Magento\Framework\EntityManager\AbstractModelHydrator
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="brand_listing_data_source" xsi:type="string">
+                    Pinpoint\Brands\Model\ResourceModel\Brand\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Pinpoint\Brands\Model\ResourceModel\Brand\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">brand_entity</argument>
+            <argument name="resourceModel" xsi:type="string">Pinpoint\Brands\Model\ResourceModel\Brand</argument>
+        </arguments>
+    </virtualType>
+</config>

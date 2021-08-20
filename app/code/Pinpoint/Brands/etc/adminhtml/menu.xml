@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Pinpoint_Brands::content_logomanager" title="Logo Manager" module="Pinpoint_Brands" sortOrder="50"
+             resource="Pinpoint_Brands::content_logomanager" parent="Magento_Backend::content"/>
+        <add id="Pinpoint_Brands::logomanager_managelogos" title="Manage Logos" module="Pinpoint_Brands" sortOrder="50"
+             resource="Pinpoint_Brands::content_logomanager" action="managelogos/view"
+             parent="Pinpoint_Brands::content_logomanager"/>
+    </menu>
+</config>
