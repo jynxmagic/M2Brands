@@ -76,12 +76,6 @@ class JwtManagerTest extends TestCase
         ) {
             $this->verifyAgainstHeaders([$jwt->getHeader()], $recreated->getHeader());
         }
-        if ($readEncryption instanceof JwsSignatureJwks) {
-            if ($kid = $readEncryption->getJwkSet()->getKeys()[0]->getKeyId()) {
-                $this->assertNotNull($jwt->getHeader()->getParameter('kid'));
-                $this->assertEquals($kid, $jwt->getHeader()->getParameter('kid'));
-            }
-        }
         //Verifying payload
         $this->assertEquals($jwt->getPayload()->getContent(), $recreated->getPayload()->getContent());
         if ($jwt->getPayload() instanceof ClaimsPayloadInterface) {
@@ -325,8 +319,8 @@ class JwtManagerTest extends TestCase
             ),
             null,
             [
-                new JweHeader([new PrivateHeaderParameter('tst', 2), new KeyId('2')]),
-                new JweHeader([new PrivateHeaderParameter('test2', 3), new KeyId('1')])
+                new JweHeader([new PrivateHeaderParameter('tst', 2), new KeyId('1')]),
+                new JweHeader([new PrivateHeaderParameter('test2', 3), new KeyId('2')])
             ],
             new ClaimsPayload(
                 [
@@ -372,7 +366,7 @@ class JwtManagerTest extends TestCase
             ],
             'jws-HS384' => [
                 $flatJws,
-                $enc = new JwsSignatureJwks($jwkFactory->createHs384($sharedSecret, '3')),
+                $enc = new JwsSignatureJwks($jwkFactory->createHs384($sharedSecret)),
                 [$enc]
             ],
             'jws-HS512' => [

@@ -13,7 +13,6 @@ use Magento\Framework\Math\Random;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\GraphQl\Quote\GetMaskedQuoteIdByReservedOrderId;
 use Magento\GraphQl\Service\GraphQlRequest;
-use Magento\Integration\Api\CustomerTokenServiceInterface;
 use Magento\Integration\Model\Oauth\Token;
 use Magento\Paypal\Model\Payflow\Request;
 use Magento\Paypal\Model\Payflow\Service\Gateway;
@@ -175,9 +174,9 @@ QUERY;
                 ['USER2', 'USER2SilentPostHash', $this->returnSelf()]
             );
 
-        /** @var CustomerTokenServiceInterface $tokenService */
-        $tokenService = $this->objectManager->get(CustomerTokenServiceInterface::class);
-        $customerToken = $tokenService->createCustomerAccessToken('customer@example.com', 'password');
+        /** @var Token $tokenModel */
+        $tokenModel = $this->objectManager->create(Token::class);
+        $customerToken = $tokenModel->createCustomerToken(1)->getToken();
 
         $requestHeaders = [
             'Accept' => 'application/json',

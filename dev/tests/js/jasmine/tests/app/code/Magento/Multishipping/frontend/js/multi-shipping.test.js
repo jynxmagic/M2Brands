@@ -100,7 +100,7 @@ define([
             it('Check add new address event', function () {
                 Obj = new MultiShipping({});
                 Obj.element = jasmine.createSpyObj('element', ['submit']);
-                addNewAddressBtn.trigger('click');
+                addNewAddressBtn.click();
 
                 expect(Obj.element.submit).toHaveBeenCalled();
                 expect(addressflag.val()).toBe('1');
@@ -109,7 +109,7 @@ define([
             it('Check can continue event', function () {
                 Obj = new MultiShipping({});
                 Obj.element = jasmine.createSpyObj('element', ['submit']);
-                canContinueBtn.trigger('click');
+                canContinueBtn.click();
 
                 expect(Obj.element.submit).not.toHaveBeenCalled();
                 expect(canContinueFlag.val()).toBe('1');

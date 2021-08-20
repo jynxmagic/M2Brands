@@ -232,16 +232,10 @@ QUERY;
     /**
      * @magentoApiDataFixture Magento/Bundle/_files/product_with_multiple_options_and_custom_quantity.php
      * @magentoApiDataFixture Magento/Checkout/_files/active_quote.php
-     * @dataProvider bundleItemOptionsDataProvider
-     * @return void
      */
-    public function testAddBundleItemWithCustomOptionQuantity(
-        string $optionQty0,
-        string $optionQty1,
-        string $expectedOptionQty0,
-        string $expectedOptionQty1
-    ): void
+    public function testAddBundleItemWithCustomOptionQuantity()
     {
+
         $this->quoteResource->load(
             $this->quote,
             'test_order_1',
@@ -256,34 +250,11 @@ QUERY;
         $uId0 = $bundleOptions[0]['options'][0]['uid'];
         $uId1 = $bundleOptions[1]['options'][0]['uid'];
         $response = $this->graphQlMutation(
-            $this->getMutationsQuery($maskedQuoteId, $uId0, $uId1, $sku, $optionQty0, $optionQty1)
+            $this->getMutationsQuery($maskedQuoteId, $uId0, $uId1, $sku)
         );
         $bundleOptions = $response['addProductsToCart']['cart']['items'][0]['bundle_options'];
-        $this->assertEquals($expectedOptionQty0, $bundleOptions[0]['values'][0]['quantity']);
-        $this->assertEquals($expectedOptionQty1, $bundleOptions[1]['values'][0]['quantity']);
-    }
-
-    /**
-     * Data provider for testAddBundleItemWithCustomOptionQuantity
-     *
-     * @return array
-     */
-    public function bundleItemOptionsDataProvider(): array
-    {
-        return [
-            [
-                'optionQty0' => '10',
-                'optionQty1' => '1',
-                'expectedOptionQty0' => '10',
-                'expectedOptionQty1' => '1',
-            ],
-            [
-                'optionQty0' => '5',
-                'optionQty1' => '5',
-                'expectedOptionQty0' => '5',
-                'expectedOptionQty1' => '1',
-            ],
-        ];
+        $this->assertEquals(5, $bundleOptions[0]['values'][0]['quantity']);
+        $this->assertEquals(1, $bundleOptions[1]['values'][0]['quantity']);
     }
 
     /**
@@ -327,22 +298,11 @@ QUERY;
 QUERY;
     }
 
-    /**
-     * @param string $maskedQuoteId
-     * @param string $optionUid0
-     * @param string $optionUid1
-     * @param string $sku
-     * @param string $optionQty0
-     * @param string $optionQty1
-     * @return string
-     */
     private function getMutationsQuery(
         string $maskedQuoteId,
         string $optionUid0,
         string $optionUid1,
-        string $sku,
-        string $optionQty0,
-        string $optionQty1
+        string $sku
     ): string {
         return <<<QUERY
 mutation {
@@ -353,15 +313,15 @@ mutation {
                     sku: "{$sku}"
                     quantity: 2
                     selected_options: [
-                        "{$optionUid0}", "{$optionUid1}"
+                        "{$optionUid1}", "{$optionUid0}"
                     ],
                     entered_options: [{
                         uid: "{$optionUid0}"
-                        value: "{$optionQty0}"
+                        value: "5"
                      },
                      {
                         uid: "{$optionUid1}"
-                        value: "{$optionQty1}"
+                        value: "5"
                      }]
                 }
             ]

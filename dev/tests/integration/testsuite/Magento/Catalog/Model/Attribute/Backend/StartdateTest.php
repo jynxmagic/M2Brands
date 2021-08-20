@@ -61,9 +61,6 @@ class StartdateTest extends TestCase
     }
 
     /**
-     * Test that Product with attribute "Set Product as New"
-     * with starting date and with expired ending date throws Exception.
-     *
      * @return void
      */
     public function testValidate(): void
@@ -74,20 +71,5 @@ class StartdateTest extends TestCase
         $msg = __('Make sure the To Date is later than or the same as the From Date.');
         $this->expectExceptionMessage((string)$msg);
         $this->startDate->validate($product);
-    }
-
-    /**
-     * Test that Product with attribute "Set Product as New"
-     * without starting date and with expired ending date doesn't throw Exception.
-     *
-     * @return void
-     */
-    public function testValidatePastEndWithNoStart(): void
-    {
-        $product = $this->productFactory->create();
-        $actualResult = $this->startDate->validate($product);
-        $this->assertEquals(true, $actualResult);
-        $noException = $this->getExpectedExceptionMessage();
-        $this->assertNull($noException);
     }
 }

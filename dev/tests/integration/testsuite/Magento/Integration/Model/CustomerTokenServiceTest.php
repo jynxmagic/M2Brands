@@ -53,7 +53,10 @@ class CustomerTokenServiceTest extends \PHPUnit\Framework\TestCase
         $customerUserName = 'customer@example.com';
         $password = 'password';
         $accessToken = $this->tokenService->createCustomerAccessToken($customerUserName, $password);
-        $this->assertNotNull($accessToken);
+        $customerData = $this->accountManagement->authenticate($customerUserName, $password);
+        /** @var $token TokenModel */
+        $token = $this->tokenModel->loadByCustomerId($customerData->getId())->getToken();
+        $this->assertEquals($accessToken, $token);
     }
 
     /**

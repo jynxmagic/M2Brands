@@ -49,14 +49,15 @@ class SkuTest extends \PHPUnit\Framework\TestCase
         );
         $product = $repository->get('simple');
         $product->setSku('0123456789012345678901234567890123456789012345678901234567890123');
-        $product->save();
+
         /** @var \Magento\Catalog\Model\Product\Copier $copier */
         $copier = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
             \Magento\Catalog\Model\Product\Copier::class
         );
-        $duplicate = $copier->copy($product);
+        $copier->copy($product);
         $this->assertEquals('0123456789012345678901234567890123456789012345678901234567890123', $product->getSku());
-        $this->assertEquals('01234567890123456789012345678901234567890123456789012345678901-1', $duplicate->getSku());
+        $product->getResource()->getAttribute('sku')->getBackend()->beforeSave($product);
+        $this->assertEquals('01234567890123456789012345678901234567890123456789012345678901-1', $product->getSku());
     }
 
     /**
