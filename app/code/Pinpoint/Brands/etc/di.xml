@@ -51,4 +51,22 @@
             <argument name="resourceModel" xsi:type="string">Pinpoint\Brands\Model\ResourceModel\Brand</argument>
         </arguments>
     </virtualType>
+
+    <type name="Pinpoint\Brand\Controller\Adminhtml\Image\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Pinpoint\Brands\Imageuploader</argument>
+        </arguments>
+    </type>
+    <virtualType name="Pinpoint\Brands\Imageuploader" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">catalog/tmp/brand</argument>
+            <argument name="basePath" xsi:type="string">catalog/brand</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>
