@@ -11,8 +11,7 @@
     </argument>
     <settings>
         <buttons>
-            <button name="reset" class="Magento\CatalogRule\Block\Adminhtml\Edit\ResetButton"/>
-            <button name="save" class="Magento\Cms\Block\Adminhtml\Page\Edit\SaveButton"/>
+            <button name="save" class="Pinpoint\Brands\Block\Adminhtml\Edit\SaveButton"/>
             <button name="delete" class="Magento\Cms\Block\Adminhtml\Page\Edit\DeleteButton"/>
             <button name="back">
                 <url path="*/*/"/>
@@ -44,7 +43,7 @@
     </dataSource>
     <fieldset name="general" sortOrder="10">
         <settings>
-            <collapsible>true</collapsible>
+            <collapsible>false</collapsible>
             <opened>true</opened>
             <label translate="true">General</label>
         </settings>
@@ -68,6 +67,9 @@
                 </item>
             </argument>
             <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
                 <label translate="true">Title</label>
                 <dataType>text</dataType>
                 <visible>true</visible>
@@ -87,10 +89,15 @@
                     <item name="required" xsi:type="boolean">true</item>
                     <item name="sortOrder" xsi:type="number">40</item>
                     <item name="uploaderConfig" xsi:type="array">
-                        <item name="url" xsi:type="url" path="*/upload"/>
+                        <item name="url" xsi:type="url" path="managelogos/image/upload"/>
                     </item>
                 </item>
             </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
         </field>
     </fieldset>
 </form>

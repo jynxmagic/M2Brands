@@ -13,9 +13,6 @@ use Pinpoint\Brands\Model\BrandFactory;
 use Pinpoint\Brands\Model\ResourceModel\Brand\CollectionFactory;
 use Psr\Log\LoggerInterface;
 
-/**
- * Cms Page DataProvider
- */
 class DataProvider extends ModifierPoolDataProvider
 {
     /**
@@ -79,6 +76,7 @@ class DataProvider extends ModifierPoolDataProvider
     {
         return $meta;
     }
+
 
     /**
      * Get data

@@ -2,11 +2,13 @@
 
 namespace Pinpoint\Brands\Controller\Adminhtml\Save;
 
+use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Backend\Model\View\Result\RedirectFactory;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Pinpoint\Brands\Api\BrandRepositoryInterface;
 
@@ -16,14 +18,25 @@ class Index extends Action implements HttpPostActionInterface
      * Authorization level of a basic admin session
      */
     const ADMIN_RESOURCE = 'Pinpoint_Brands::manage';
+
+    /**
+     * @var BrandRepositoryInterface $brandRepository
+     */
     private $brandRepository;
+
+    /**
+     * @var RedirectFactory $redirectFactory
+     */
+    private $redirectFactory;
 
     public function __construct(
         Context                  $context,
-        BrandRepositoryInterface $brandRepository
+        BrandRepositoryInterface $brandRepository,
+        RedirectFactory          $redirectFactory
     ) {
         parent::__construct($context);
         $this->brandRepository = $brandRepository;
+        $this->redirectFactory = $redirectFactory;
     }
 
     /**
@@ -33,11 +46,23 @@ class Index extends Action implements HttpPostActionInterface
      */
     public function execute()
     {
-        $brand = $this->brandRepository->create();
-        $data = $this->getRequest()->getParams();
-        $brand->setData($data);
+        /**
+         * @var Redirect
+         */
+        $result = $this->redirectFactory->create();
 
-        $this->brandRepository->save($brand);
-        return $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+        try {
+            $brand = $this->brandRepository->create();
+            $data = $this->getRequest()->getParams();
+            $brand->setData($data);
+            $this->brandRepository->save($brand);
+            $this->messageManager->addSuccessMessage(__('Brand updated.'));
+            $result->setPath("managelogos/view");
+        } catch (Exception $e) {
+            $this->messageManager->addErrorMessage(__("Failed to save logo. " . $e->getMessage()));
+            $result->setPath("managelogos/edit", ["id" => $this->getRequest()->getParam('id')]);
+        }
+
+        return $result;
     }
 }
