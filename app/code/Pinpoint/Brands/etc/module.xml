@@ -3,8 +3,9 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Pinpoint_Brands" setup_version="2.0.7">
         <sequence>
-            <module name="Magento_Widget"/>
+            <module name="Mage_Eav"/>
             <module name="Magento_Ui"/>
+            <module name="Magento_Widget"/>
             <module name="Magento_Backend"/>
         </sequence>
     </module>
