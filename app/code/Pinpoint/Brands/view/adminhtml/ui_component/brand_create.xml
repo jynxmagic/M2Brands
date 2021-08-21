@@ -65,6 +65,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">brand</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
                 </item>
             </argument>
             <settings>
@@ -90,7 +91,7 @@
                     <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
                     <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
                     <item name="required" xsi:type="boolean">true</item>
-                    <item name="sortOrder" xsi:type="number">40</item>
+                    <item name="sortOrder" xsi:type="number">2</item>
                     <item name="uploaderConfig" xsi:type="array">
                         <item name="url" xsi:type="url" path="managelogos/image/upload"/>
                     </item>
@@ -115,7 +116,7 @@
                     <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
                     <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
                     <item name="required" xsi:type="boolean">true</item>
-                    <item name="sortOrder" xsi:type="number">40</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
                     <item name="uploaderConfig" xsi:type="array">
                         <item name="url" xsi:type="url" path="managelogos/image/upload"/>
                     </item>
@@ -126,6 +127,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">brand</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
                 </item>
             </argument>
             <settings>
@@ -141,6 +143,7 @@
                     <item name="source" xsi:type="string">brand</item>
                     <item name="cols" xsi:type="number">15</item>
                     <item name="rows" xsi:type="number">5</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
                 </item>
             </argument>
             <settings>
@@ -155,6 +158,7 @@
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">brand</item>
                     <item name="default" xsi:type="number">1</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
                 </item>
             </argument>
             <settings>

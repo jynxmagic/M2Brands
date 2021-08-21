@@ -42,19 +42,29 @@ class Upload extends Action implements HttpPostActionInterface
      */
     public function execute()
     {
-        $imageId = $this->getRequest()->getParam('desktop_image', 'desktop_image');
-        try {
-            $result = $this->imageUploader->saveFileToTmpDir($imageId);
-            $result['cookie'] = [
-                'name' => $this->_getSession()->getName(),
-                'value' => $this->_getSession()->getSessionId(),
-                'lifetime' => $this->_getSession()->getCookieLifetime(),
-                'path' => $this->_getSession()->getCookiePath(),
-                'domain' => $this->_getSession()->getCookieDomain(),
-            ];
-        } catch (Exception $e) {
-            $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
+        $imageId = $this->getRequest()->getParam('param_name', 'desktop_image');
+        if (!$imageId) {
+            $imageId = $this->getRequest()->getParam("param_name", "mobile_image");
         }
-        return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($result);
+        if ($imageId) {
+            try {
+                $result = $this->imageUploader->saveFileToTmpDir($imageId);
+                $result['cookie'] = [
+                    'name' => $this->_getSession()->getName(),
+                    'value' => $this->_getSession()->getSessionId(),
+                    'lifetime' => $this->_getSession()->getCookieLifetime(),
+                    'path' => $this->_getSession()->getCookiePath(),
+                    'domain' => $this->_getSession()->getCookieDomain(),
+                ];
+            } catch (Exception $e) {
+                $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
+            }
+        }
+        return $this->resultFactory->create(ResultFactory::TYPE_JSON)
+            ->setData(
+                !empty($result) ?
+                    $result :
+                    ["error" => "Could not find image id in post data."]
+            );
     }
 }

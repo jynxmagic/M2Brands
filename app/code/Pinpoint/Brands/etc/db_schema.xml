@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="brand_entity" resource="default" engine="innodb" comment="brand_entity">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Brand Title"/>
+        <column xsi:type="varchar" name="desktop_image" nullable="false" length="255"
+                comment="uri to desktop image path"/>
+        <column xsi:type="varchar" name="mobile_image" nullable="true" length="255" comment="uri to mobile image path"/>
+        <column xsi:type="varchar" name="alt_text" nullable="true" length="255" comment="alt text for screenreaders"
+                default="No alt text provided."/>
+        <column xsi:type="varchar" name="description" nullable="true" length="255" comment="description of company"
+                default="No description provided."/>
+        <column xsi:type="boolean" name="enabled" nullable="false" default="true" comment="is logo enabled?"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>
