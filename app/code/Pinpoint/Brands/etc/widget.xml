@@ -1,0 +1,13 @@
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget class="Pinpoint\Brands\Block\Widget\Logo" id="logo_widget">
+        <label>Logos</label>
+        <description>List logo images.</description>
+        <!--<parameters>
+            <parameter source_model="Pinpoint\Brands\Block\Widget\Source\Select" name="category" required="false"
+                       xsi:type="select" visible="true">
+                <label translate="true">Category</label>
+            </parameter>
+        </parameters> -->
+    </widget>
+</widgets>

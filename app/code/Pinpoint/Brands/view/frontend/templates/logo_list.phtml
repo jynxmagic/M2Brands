@@ -1,0 +1,25 @@
+<?php
+
+
+/* @var $block Pinpoint\Brands\Block\Widget\Logo */
+
+$brands = $block->getBrands();
+?>
+
+<?php foreach ($brands
+
+               as $brand): ?>
+    <div>
+        <p class="title"><?php echo $brand->getTitle() ?></p>
+        <picture>
+            <source media="(min-width: 465px)"
+                    class="icons-image-list"
+                    srcset="<?php echo $block->getImageUrlForImage($brand->getDesktopImage()) ?>">
+            <img
+                src="<?php echo $block->getImageUrlForImage($brand->getMobileImage()) ?>"
+                alt="<?php echo $brand->getAltText() ?>"
+                class="icons-image-list"
+            />
+        </picture>
+    </div>
+<?php endforeach; ?>
