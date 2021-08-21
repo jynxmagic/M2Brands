@@ -69,4 +69,14 @@ interface BrandInterface
      * @return void
      */
     public function setMobileImage($data);
+
+    /**
+     * @param bool $data
+     */
+    public function setEnabled($data);
+
+    /**
+     * @return bool
+     */
+    public function getEnabled();
 }

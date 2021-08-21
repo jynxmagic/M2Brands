@@ -167,20 +167,18 @@
                 </item>
             </argument>
             <settings>
-                <label translate="true">Enabled</label>
                 <dataType>boolean</dataType>
-                <visible>true</visible>
+                <label translate="true">Enable Logo</label>
                 <dataScope>enabled</dataScope>
             </settings>
             <formElements>
                 <checkbox>
                     <settings>
-                        <checked>true</checked>
-                        <prefer>toggle</prefer>
                         <valueMap>
-                            <map name="true" xsi:type="boolean">true</map>
-                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
                         </valueMap>
+                        <prefer>toggle</prefer>
                     </settings>
                 </checkbox>
             </formElements>

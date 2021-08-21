@@ -19,7 +19,6 @@ class Brand extends AbstractModel implements BrandInterface, IdentityInterface
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-
     public function getEntityId()
     {
         return $this->getData("entity_id");
@@ -95,6 +94,16 @@ class Brand extends AbstractModel implements BrandInterface, IdentityInterface
     public function setMobileImage($data)
     {
         $this->setData("mobile_image", $data);
+    }
+
+    public function setEnabled($data)
+    {
+        $this->setData("enabled", $data);
+    }
+
+    public function getEnabled()
+    {
+        return $this->getData("enabled");
     }
 
     protected function _construct()

@@ -58,11 +58,11 @@ class Index extends Action implements HttpPostActionInterface
             $data = $this->getRequest()->getParams();
             $brand->setData($data);
             $this->brandRepository->save($brand);
-            $this->messageManager->addSuccessMessage(__('Brand updated.'));
+            $this->messageManager->addSuccessMessage(__('Brand saved successfully.'));
             $result->setPath("managelogos/view");
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage(__("Failed to save logo. " . $e->getMessage()));
-            $result->setPath("managelogos/edit", ["entitiy_id" => $this->getRequest()->getParam('entitiy_id')]);
+            $result->setPath("managelogos/edit", ["entity_id" => $this->getRequest()->getParam('entity_id')]);
         }
 
         return $result;

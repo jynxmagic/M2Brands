@@ -49,8 +49,8 @@ class Logo extends Template implements BlockInterface
          * @var Filter $filter
          */
         $filter = $this->filterFactory->create();
-        $filter->setField("title");
-        $filter->setValue("test");
+        $filter->setField("enabled");
+        $filter->setValue("true");
         $this->searchCriteriaBuilder->addFilter($filter);
         $criteria = $this->searchCriteriaBuilder->create();
         $brands = $this->brandRepositoryInterface->getList($criteria)->getItems();

@@ -93,6 +93,17 @@
                 </item>
             </argument>
         </column>
+        <column name="enabled" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Pinpoint\Brands\Model\Brand\Source\EnabledSource"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
         <actionsColumn name="actions" class="Pinpoint\Brands\Ui\Component\Grid\Column\ViewAction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
