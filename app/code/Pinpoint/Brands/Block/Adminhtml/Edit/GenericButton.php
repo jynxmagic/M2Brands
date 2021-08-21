@@ -5,9 +5,11 @@ namespace Pinpoint\Brands\Block\Adminhtml\Edit;
 use Exception;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Pinpoint\Brands\Api\BrandRepositoryInterface;
+use Pinpoint\Brands\Model\Brand;
 
-class GenericButton
+class GenericButton implements ButtonProviderInterface
 {
     /**
      * @var Context
@@ -36,24 +38,26 @@ class GenericButton
      */
     public function __construct(
         Context                  $context,
-        BrandRepositoryInterface $brandRepository
+        BrandRepositoryInterface $brandRepository,
+        $formName
     ) {
         $this->urlBuilder = $context->getUrlBuilder();
         $this->context = $context;
         $this->brandRepository = $brandRepository;
+        $this->formName = $formName;
     }
 
     /**
-     * Return the current Catalog Rule Id.
+     * Return the current brand
      *
-     * @return int|null
+     * @return Brand|null
      */
-    public function getBrandId()
+    public function getBrand()
     {
         try {
-            return $this->brandRepository->getById(
-                $this->context->getRequest()->getParam('page_id')
-            )->getId();
+            return $this->brandRepository->getByEntityId(
+                $this->context->getRequest()->getParam('entity_id')
+            );
         } catch (Exception $e) {
         }
         return null;
@@ -80,5 +84,10 @@ class GenericButton
     public function canRender($name)
     {
         return $name;
+    }
+
+    public function getButtonData()
+    {
+        return [];
     }
 }

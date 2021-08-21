@@ -20,7 +20,7 @@
             <argument name="metadata" xsi:type="array">
                 <item name="Pinpoint\Brands\Api\Data\BrandInterface" xsi:type="array">
                     <item name="entityTableName" xsi:type="string">brand_entity</item>
-                    <item name="identifierField" xsi:type="string">id</item>
+                    <item name="identifierField" xsi:type="string">entity_id</item>
                 </item>
             </argument>
         </arguments>
@@ -39,12 +39,12 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="brand_listing_data_source" xsi:type="string">
-                    Pinpoint\Brands\Model\ResourceModel\Brand\Collection
+                    Pinpoint\Brands\Model\ResourceModel\Brand\Grid\Collection
                 </item>
             </argument>
         </arguments>
     </type>
-    <virtualType name="Pinpoint\Brands\Model\ResourceModel\Brand\Collection"
+    <virtualType name="Pinpoint\Brands\Model\ResourceModel\Brand\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">brand_entity</argument>

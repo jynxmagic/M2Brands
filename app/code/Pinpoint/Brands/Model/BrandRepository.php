@@ -61,17 +61,16 @@ class BrandRepository implements BrandRepositoryInterface
     /**
      * @throws NoSuchEntityException
      */
-    public function getById($id)
+    public function getByEntityId($id)
     {
         if (is_numeric($id)) {
             $brand = $this->brandFactory->create();
             $brand = $this->entityManager->load($brand, $id);
-            if (!$brand->getId()) {
+            if (!$brand->getTitle()) {
                 throw new NoSuchEntityException(__(sprintf("Cannot find brand with id %i", $id)));
             }
             return $brand;
         }
-        throw new NoSuchEntityException(__(sprintf("Brand id must be numeric. `%s` given.", $id)));
     }
 
     /**
@@ -89,6 +88,17 @@ class BrandRepository implements BrandRepositoryInterface
             );
 
             $brand['desktop_image'] = $img_uri;
+        }
+
+        if ($brand["mobile_image"]) {
+            $this->imageUploader->moveFileFromTmp($brand["mobile_image"][0]['name']);
+
+            $img_uri = $this->imageUploader->getFilePath(
+                $this->imageUploader->getBasePath(),
+                $brand["mobile_image"][0]['name']
+            );
+
+            $brand['mobile_image'] = $img_uri;
         }
 
         $this->entityManager->save($brand);

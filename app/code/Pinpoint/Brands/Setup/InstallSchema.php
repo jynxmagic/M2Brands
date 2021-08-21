@@ -43,12 +43,6 @@ class InstallSchema implements InstallSchemaInterface
             );
 
             $table->addColumn(
-                "id",
-                Table::TYPE_INTEGER,
-                null
-            );
-
-            $table->addColumn(
                 "title",
                 Table::TYPE_TEXT,
                 255,

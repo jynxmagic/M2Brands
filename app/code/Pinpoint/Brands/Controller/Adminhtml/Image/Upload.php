@@ -42,7 +42,7 @@ class Upload extends Action implements HttpPostActionInterface
      */
     public function execute()
     {
-        $imageId = $this->getRequest()->getParam('param_name', 'desktop_image');
+        $imageId = $this->getRequest()->getParam('desktop_image', 'desktop_image');
         try {
             $result = $this->imageUploader->saveFileToTmpDir($imageId);
             $result['cookie'] = [

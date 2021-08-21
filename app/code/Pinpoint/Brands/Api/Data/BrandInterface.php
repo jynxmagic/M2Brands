@@ -2,20 +2,18 @@
 
 namespace Pinpoint\Brands\Api\Data;
 
-use Magento\Framework\Api\ExtensibleDataInterface;
-
-interface BrandInterface extends ExtensibleDataInterface
+interface BrandInterface
 {
     /**
      * @return int
      */
-    public function getId();
+    public function getEntityId();
 
     /**
-     * @param int $id
+     * @param int $data
      * @return void
      */
-    public function setId($id);
+    public function setEntityId($data);
 
     /**
      * @return string
@@ -23,18 +21,52 @@ interface BrandInterface extends ExtensibleDataInterface
     public function getTitle();
 
     /**
-     * @param string $title
+     * @param string $data
      * @return void
      */
-    public function setTitle($title);
+    public function setTitle($data);
 
     /**
-     * @return BrandExtensionInterface | null
+     * @return string
      */
-    public function getExtensionAttributes();
+    public function getDescription();
 
     /**
-     * @param BrandExtensionInterface $extensionAttributes
+     * @param string $data
+     * @return void
      */
-    public function setExtensionAttributes(BrandExtensionInterface $extensionAttributes);
+    public function setDescription($data);
+
+    /**
+     * @return string
+     */
+    public function getAltText();
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setAltText($data);
+
+    /**
+     * @return string
+     */
+    public function getDesktopImage();
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setDesktopImage($data);
+
+    /**
+     * @return string
+     */
+    public function getMobileImage();
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setMobileImage($data);
 }

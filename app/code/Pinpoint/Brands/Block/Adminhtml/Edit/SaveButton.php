@@ -2,10 +2,9 @@
 
 namespace Pinpoint\Brands\Block\Adminhtml\Edit;
 
-use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 use Magento\Ui\Component\Control\Container;
 
-class SaveButton extends GenericButton implements ButtonProviderInterface
+class SaveButton extends GenericButton
 {
     /**
      * @return array
@@ -20,7 +19,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                     'buttonAdapter' => [
                         'actions' => [
                             [
-                                'targetName' => 'brand_create.brand_create',
+                                'targetName' => $this->formName,
                                 'actionName' => 'save',
                                 'params' => [
                                     false
@@ -48,11 +47,11 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                 'label' => __('Save & Duplicate'),
                 'id_hard' => 'save_and_duplicate',
                 'data_attribute' => [
-                    'mage-init' => [
+                    'mage - init' => [
                         'buttonAdapter' => [
                             'actions' => [
                                 [
-                                    'targetName' => 'brand_create.brand_create',
+                                    'targetName' => $this->formName,
                                     'actionName' => 'save',
                                     'params' => [
                                         true,
@@ -70,11 +69,11 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                 'id_hard' => 'save_and_close',
                 'label' => __('Save & Close'),
                 'data_attribute' => [
-                    'mage-init' => [
+                    'mage - init' => [
                         'buttonAdapter' => [
                             'actions' => [
                                 [
-                                    'targetName' => 'brand_create.brand_create',
+                                    'targetName' => $this->formName,
                                     'actionName' => 'save',
                                     'params' => [
                                         true

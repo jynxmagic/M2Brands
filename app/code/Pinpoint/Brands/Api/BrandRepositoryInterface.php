@@ -12,7 +12,7 @@ interface BrandRepositoryInterface
      * @param int $id
      * @return BrandInterface
      */
-    public function getById($id);
+    public function getByEntityId($id);
 
     /**
      * @param BrandInterface $brand

@@ -18,6 +18,9 @@ class BrandSetup extends EavSetup
                 "attributes" => [
                     "title" => [
                         "type" => "static"
+                    ],
+                    "alt_text" => [
+                        "type" => "static"
                     ]
                 ]
             ]

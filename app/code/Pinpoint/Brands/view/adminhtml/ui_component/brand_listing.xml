@@ -35,26 +35,26 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">brand_listing_data_source</argument>
-            <argument name="requestFieldName" xsi:type="string">id</argument>
-            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">id</item>
+                        <item name="indexField" xsi:type="string">entity_id</item>
                     </item>
                 </item>
             </argument>
         </argument>
         <settings>
-            <submitUrl path="managelogos/edit/save"/>
+            <submitUrl path="managelogos/save/index"/>
         </settings>
     </dataSource>
     <columns name="spinner_columns">
         <selectionsColumn name="ids">
             <settings>
-                <indexField>id</indexField>
+                <indexField>entity_id</indexField>
             </settings>
         </selectionsColumn>
         <column name="entity_id">
@@ -68,21 +68,18 @@
             <settings>
                 <filter>text</filter>
                 <label translate="true">Title</label>
-                <sorting>asc</sorting>
             </settings>
         </column>
         <column name="description">
             <settings>
                 <filter>text</filter>
                 <label translate="true">Description</label>
-                <sorting>asc</sorting>
             </settings>
         </column>
         <column name="alt_text">
             <settings>
                 <filter>text</filter>
                 <label translate="true">Alt</label>
-                <sorting>asc</sorting>
             </settings>
         </column>
         <column name="desktop_image" class="Pinpoint\Brands\Ui\Component\Grid\Thumbnail">
@@ -96,11 +93,11 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="Magento\Sales\Ui\Component\Listing\Column\ViewAction">
+        <actionsColumn name="actions" class="Pinpoint\Brands\Ui\Component\Grid\Column\ViewAction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="viewUrlPath" xsi:type="string">sales/invoice/view</item>
-                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="viewUrlPath" xsi:type="string">logomanager/edit/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">entity_id</item>
                 </item>
             </argument>
             <settings>

@@ -15,6 +15,6 @@ class Brand extends AbstractDb
 
     protected function _construct()
     {
-        $this->_init("brand_entity", "id");
+        $this->_init("brand_entity", "entity_id");
     }
 }

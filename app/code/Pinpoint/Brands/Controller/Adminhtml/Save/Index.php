@@ -62,7 +62,7 @@ class Index extends Action implements HttpPostActionInterface
             $result->setPath("managelogos/view");
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage(__("Failed to save logo. " . $e->getMessage()));
-            $result->setPath("managelogos/edit", ["id" => $this->getRequest()->getParam('id')]);
+            $result->setPath("managelogos/edit", ["entitiy_id" => $this->getRequest()->getParam('entitiy_id')]);
         }
 
         return $result;

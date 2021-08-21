@@ -5,16 +5,19 @@ namespace Pinpoint\Brands\Model\Brand;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
-use Magento\Ui\DataProvider\Modifier\PoolInterface;
-use Magento\Ui\DataProvider\ModifierPoolDataProvider;
+use Magento\Ui\DataProvider\AbstractDataProvider;
 use Pinpoint\Brands\Api\BrandRepositoryInterface;
 use Pinpoint\Brands\Api\Data\BrandInterface;
 use Pinpoint\Brands\Model\BrandFactory;
+use Pinpoint\Brands\Model\ResourceModel\Brand\Collection;
 use Pinpoint\Brands\Model\ResourceModel\Brand\CollectionFactory;
-use Psr\Log\LoggerInterface;
 
-class DataProvider extends ModifierPoolDataProvider
+class DataProvider extends AbstractDataProvider
 {
+    /**
+     * @var Collection
+     */
+    protected $collection;
     /**
      * @var DataPersistorInterface
      */
@@ -39,11 +42,6 @@ class DataProvider extends ModifierPoolDataProvider
      */
     private $brandFactory;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     public function __construct(
         $name,
         $primaryFieldName,
@@ -52,12 +50,11 @@ class DataProvider extends ModifierPoolDataProvider
         DataPersistorInterface $dataPersistor,
         array $meta = [],
         array $data = [],
-        PoolInterface $pool = null,
         ?RequestInterface $request = null,
         ?BrandRepositoryInterface $brandRepository = null,
         ?BrandFactory $brandFactory = null
     ) {
-        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data, $pool);
+        parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection = $brandCollectionFactory->create();
         $this->dataPersistor = $dataPersistor;
         $this->meta = $this->prepareMeta($this->meta);
@@ -89,10 +86,31 @@ class DataProvider extends ModifierPoolDataProvider
             return $this->loadedData;
         }
 
-        $brand = $this->getCurrentBrand();
-        $this->loadedData[$brand->getId()] = $brand->getData();
+        $items = $this->getCollection()->getItems();
+
+        foreach ($items as $block) {
+            $this->loadedData[$block->getId()]["brand"] = $block->getData();
+        }
+
+        $data = $this->dataPersistor->get('brand');
+        if (!empty($data)) {
+            $block = $this->getCollection()->getNewEmptyItem();
+            $block->setData($data);
+            $this->loadedData[$block->getId()] = $block->getData();
+            $this->dataPersistor->clear("brand");
+        }
 
         return $this->loadedData;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMeta()
+    {
+        $meta = parent::getMeta();
+
+        return $meta;
     }
 
     /**
@@ -100,17 +118,16 @@ class DataProvider extends ModifierPoolDataProvider
      *
      * @return BrandInterface
      */
-    private function getCurrentBrand(): BrandInterface
+    private function getCurrentBrand()
     {
         $brandId = $this->getBrandId();
         if ($brandId) {
-            $brand = $this->brandRepository->getById($brandId);
-
+            $brand = $this->brandRepository->getByEntityId($brandId);
             return $brand;
         }
 
         $data = $this->dataPersistor->get('brand');
-        if (empty($data)) {
+        if (!empty($data)) {
             return $this->brandRepository->create();
         }
         $this->dataPersistor->clear('brand');
@@ -124,18 +141,8 @@ class DataProvider extends ModifierPoolDataProvider
      *
      * @return int
      */
-    private function getBrandId(): int
+    private function getBrandId()
     {
         return (int)$this->request->getParam($this->getRequestFieldName());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMeta()
-    {
-        $meta = parent::getMeta();
-
-        return $meta;
     }
 }

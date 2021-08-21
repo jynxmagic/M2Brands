@@ -7,7 +7,7 @@ use Pinpoint\Brands\Model\Brand;
 
 class Collection extends AbstractCollection
 {
-    protected $_idFieldName = 'id';
+    protected $_idFieldName = 'entity_id';
     protected $_eventPrefix = 'pinpoint_brand_collection';
     protected $_eventObject = 'brand_collection';
 
