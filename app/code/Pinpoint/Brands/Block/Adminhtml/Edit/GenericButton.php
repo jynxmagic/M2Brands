@@ -38,13 +38,11 @@ class GenericButton implements ButtonProviderInterface
      */
     public function __construct(
         Context                  $context,
-        BrandRepositoryInterface $brandRepository,
-        $formName
+        BrandRepositoryInterface $brandRepository
     ) {
         $this->urlBuilder = $context->getUrlBuilder();
         $this->context = $context;
         $this->brandRepository = $brandRepository;
-        $this->formName = $formName;
     }
 
     /**

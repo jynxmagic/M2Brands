@@ -19,10 +19,10 @@ class SaveButton extends GenericButton
                     'buttonAdapter' => [
                         'actions' => [
                             [
-                                'targetName' => $this->formName,
+                                'targetName' => "brand_create.brand_create",
                                 'actionName' => 'save',
                                 'params' => [
-                                    false
+                                    true
                                 ]
                             ]
                         ]
@@ -51,7 +51,7 @@ class SaveButton extends GenericButton
                         'buttonAdapter' => [
                             'actions' => [
                                 [
-                                    'targetName' => $this->formName,
+                                    'targetName' => "brand_create.brand_create",
                                     'actionName' => 'save',
                                     'params' => [
                                         true,
@@ -73,7 +73,7 @@ class SaveButton extends GenericButton
                         'buttonAdapter' => [
                             'actions' => [
                                 [
-                                    'targetName' => $this->formName,
+                                    'targetName' => "brand_create.brand_create",
                                     'actionName' => 'save',
                                     'params' => [
                                         true

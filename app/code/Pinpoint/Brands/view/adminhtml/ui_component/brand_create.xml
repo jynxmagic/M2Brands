@@ -13,15 +13,15 @@
     <settings>
         <buttons>
             <button name="save" class="Pinpoint\Brands\Block\Adminhtml\Edit\SaveButton"/>
-            <button name="delete" class="Magento\Cms\Block\Adminhtml\Page\Edit\DeleteButton"/>
+            <button name="delete" class="Pinpoint\Brands\Block\Adminhtml\Edit\DeleteButton"/>
             <button name="back">
                 <url path="managelogos/view/index/"/>
                 <class>back</class>
                 <label translate="true">Back</label>
             </button>
         </buttons>
-        <namespace>brand</namespace>
-        <dataScope>brand</dataScope>
+        <namespace>brand_create</namespace>
+        <dataScope>data</dataScope>
         <deps>
             <dep>brand_create.brand_create_data_source</dep>
         </deps>
@@ -51,7 +51,7 @@
         <field name="entity_id" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
                 </item>
             </argument>
             <settings>
@@ -64,7 +64,7 @@
         <field name="title" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
                 </item>
             </argument>
             <settings>
@@ -81,7 +81,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">string</item>
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
                     <item name="label" xsi:type="string" translate="true">Desktop Image</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="formElement" xsi:type="string">imageUploader</item>
@@ -106,7 +106,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">string</item>
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
                     <item name="label" xsi:type="string" translate="true">Mobile Image</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="formElement" xsi:type="string">imageUploader</item>
@@ -125,7 +125,7 @@
         <field name="alt_text" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
                 </item>
             </argument>
             <settings>
@@ -138,7 +138,7 @@
         <field name="description" formElement="textarea">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
                     <item name="cols" xsi:type="number">15</item>
                     <item name="rows" xsi:type="number">5</item>
                 </item>
@@ -153,7 +153,8 @@
         <field name="enabled" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">brand_create_data_source</item>
+                    <item name="source" xsi:type="string">brand</item>
+                    <item name="default" xsi:type="number">1</item>
                 </item>
             </argument>
             <settings>
