@@ -50,7 +50,7 @@ class Logo extends Template implements BlockInterface
          */
         $filter = $this->filterFactory->create();
         $filter->setField("title");
-        $filter->setValue("Mobile image test");
+        $filter->setValue("test");
         $this->searchCriteriaBuilder->addFilter($filter);
         $criteria = $this->searchCriteriaBuilder->create();
         $brands = $this->brandRepositoryInterface->getList($criteria)->getItems();

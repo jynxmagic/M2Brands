@@ -5,21 +5,21 @@
 
 $brands = $block->getBrands();
 ?>
+<section>
+    <h5>Brands</h5>
+    <?php foreach ($brands
 
-<?php foreach ($brands
-
-               as $brand): ?>
-    <div>
-        <p class="title"><?php echo $brand->getTitle() ?></p>
-        <picture>
-            <source media="(min-width: 465px)"
-                    class="icons-image-list"
+                   as $brand): ?>
+        <picture class="iti" style="width: 100px">
+            <source media="(min-width: 480px)"
+                    class="iti"
                     srcset="<?php echo $block->getImageUrlForImage($brand->getDesktopImage()) ?>">
             <img
                 src="<?php echo $block->getImageUrlForImage($brand->getMobileImage()) ?>"
                 alt="<?php echo $brand->getAltText() ?>"
-                class="icons-image-list"
+                class="iti"
             />
         </picture>
-    </div>
-<?php endforeach; ?>
+
+    <?php endforeach; ?>
+</section>
