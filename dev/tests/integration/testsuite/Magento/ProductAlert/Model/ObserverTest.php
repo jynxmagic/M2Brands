@@ -7,39 +7,57 @@ declare(strict_types=1);
 
 namespace Magento\ProductAlert\Model;
 
-use Magento\Framework\DB\Select;
-use Magento\ProductAlert\Model\ResourceModel\Price as PriceResource;
+use Magento\Customer\Api\AccountManagementInterface;
+use Magento\Customer\Model\Session;
+use Magento\Framework\App\Area;
+use Magento\Framework\Locale\Resolver;
+use Magento\Framework\Module\Dir\Reader;
+use Magento\Framework\Phrase;
+use Magento\Framework\Phrase\Renderer\Translate as PhraseRendererTranslate;
+use Magento\Framework\Phrase\RendererInterface;
+use Magento\Framework\Translate;
+use Magento\Store\Model\StoreRepository;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\MessageQueue\EnvironmentPreconditionException;
-use Magento\TestFramework\MessageQueue\PreconditionFailedException;
-use Magento\TestFramework\MessageQueue\PublisherConsumerController;
-use PHPUnit\Framework\TestCase;
+use Magento\TestFramework\Helper\CacheCleaner;
+use Magento\TestFramework\Mail\Template\TransportBuilderMock;
+use Magento\TestFramework\ObjectManager;
 
 /**
- * Test Product Alert observer
+ * Test for Magento\ProductAlert\Model\Observer
  *
- * @magentoDbIsolation disabled
+ * @magentoAppIsolation enabled
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class ObserverTest extends TestCase
+class ObserverTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var ObjectManager
+     */
+    protected $_objectManager;
+
     /**
      * @var Observer
      */
     private $observer;
 
     /**
-     * @var PriceResource
+     * @var TransportBuilderMock
      */
-    private $priceResource;
+    private $transportBuilder;
 
     /**
      * @inheritDoc
      */
     protected function setUp(): void
     {
-        $objectManager = Bootstrap::getObjectManager();
-        $this->observer =  $objectManager->get(Observer::class);
-        $this->priceResource = $objectManager->create(PriceResource::class);
+        Bootstrap::getInstance()->loadArea(Area::AREA_FRONTEND);
+        $this->_objectManager = Bootstrap::getObjectManager();
+        $this->observer =  $this->_objectManager->get(Observer::class);
+        $this->transportBuilder =  $this->_objectManager->get(TransportBuilderMock::class);
+        $service = $this->_objectManager->create(AccountManagementInterface::class);
+        $customer = $service->authenticate('customer@example.com', 'password');
+        $customerSession = $this->_objectManager->get(Session::class);
+        $customerSession->setCustomerDataAsLoggedIn($customer);
     }
 
     /**
@@ -51,59 +69,57 @@ class ObserverTest extends TestCase
     public function testProcess()
     {
         $this->observer->process();
-        $this->assertProcessAlertByConsumer();
-    }
-
-    /**
-     * Waiting for execute consumer
-     *
-     * @return void
-     * @throws PreconditionFailedException
-     */
-    private function assertProcessAlertByConsumer(): void
-    {
-        /** @var PublisherConsumerController $publisherConsumerController */
-        $publisherConsumerController = Bootstrap::getObjectManager()->create(
-            PublisherConsumerController::class,
-            [
-                'consumers' => ['product_alert'],
-                'logFilePath' => TESTS_TEMP_DIR . "/MessageQueueTestLog.txt",
-                'maxMessages' => 1,
-                'appInitParams' => Bootstrap::getInstance()->getAppInitParams()
-            ]
-        );
-        try {
-            $publisherConsumerController->startConsumers();
-        } catch (EnvironmentPreconditionException $e) {
-            $this->markTestSkipped($e->getMessage());
-        } catch (PreconditionFailedException $e) {
-            $this->fail(
-                $e->getMessage()
-            );
-        }
-
-        sleep(15); // timeout to processing Magento queue
-
-        $publisherConsumerController->waitForAsynchronousResult(
-            function () {
-                return $this->loadLastPriceAlertStatus();
-            },
-            []
+        $this->assertStringContainsString(
+            'John Smith,',
+            $this->transportBuilder->getSentMessage()->getBody()->getParts()[0]->getRawContent()
         );
     }
 
     /**
-     * Load last created price alert
+     * Check translations for product alerts
      *
-     * @return bool
+     * @magentoDbIsolation disabled
+     * @magentoAppArea frontend
+     * @magentoDataFixture Magento/Catalog/_files/category.php
+     * @magentoConfigFixture current_store catalog/productalert/allow_price 1
+     * @magentoDataFixture Magento/Store/_files/second_store.php
+     * @magentoConfigFixture fixture_second_store_store general/locale/code pt_BR
+     * @magentoDataFixture Magento/ProductAlert/_files/product_alert_with_store.php
      */
-    private function loadLastPriceAlertStatus(): bool
+    public function testProcessPortuguese()
     {
-        $select = $this->priceResource->getConnection()->select();
-        $select->from($this->priceResource->getMainTable(), ['status'])
-            ->order($this->priceResource->getIdFieldName() . ' ' . Select::SQL_DESC)
-            ->limit(1);
+        // get second store
+        $storeRepository = $this->_objectManager->create(StoreRepository::class);
+        $secondStore = $storeRepository->get('fixture_second_store');
 
-        return (bool)$this->priceResource->getConnection()->fetchOne($select);
+        // check if Portuguese language is specified for the second store
+        $storeResolver = $this->_objectManager->get(Resolver::class);
+        $storeResolver->emulate($secondStore->getId());
+        $this->assertEquals('pt_BR', $storeResolver->getLocale());
+
+        // set translation data and check it
+        $modulesReader = $this->createPartialMock(Reader::class, ['getModuleDir']);
+        $modulesReader->expects($this->any())
+            ->method('getModuleDir')
+            ->willReturn(dirname(__DIR__) . '/_files/i18n');
+        /** @var Translate $translator */
+        $translator = $this->_objectManager->create(Translate::class, ['modulesReader' => $modulesReader]);
+        $translation = [
+            'Price change alert! We wanted you to know that prices have changed for these products:' =>
+                'Alerta de mudanca de preco! Queriamos que voce soubesse que os precos mudaram para esses produtos:'
+        ];
+        $translator->loadData();
+        $this->assertEquals($translation, $translator->getData());
+        $this->_objectManager->addSharedInstance($translator, Translate::class);
+        $this->_objectManager->removeSharedInstance(PhraseRendererTranslate::class);
+        Phrase::setRenderer($this->_objectManager->create(RendererInterface::class));
+
+        // dispatch process() method and check sent message
+        $this->observer->process();
+        $message = $this->transportBuilder->getSentMessage();
+        $messageContent = $message->getBody()->getParts()[0]->getRawContent();
+        $expectedText = array_shift($translation);
+        $this->assertStringContainsString('/frontend/Magento/luma/pt_BR/', $messageContent);
+        $this->assertStringContainsString(substr($expectedText, 0, 50), $messageContent);
     }
 }

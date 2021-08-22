@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <!--
+            content buffers for bugfix. see
+            https://github.com/magento/magento2/issues/13707
+        -->
+        <add id="Pinpoint_Brands::content_buffer1" title="   " module="Pinpoint_Brands"
+             sortOrder="20" parent="Magento_Backend::content" resource="Pinpoint_Brands::content_logomanager"/>
+        <add id="Pinpoint_Brands::content_buffer2" title="   " module="Pinpoint_Brands"
+             sortOrder="10" parent="Magento_Backend::content" resource="Pinpoint_Brands::content_logomanager"/>
+
+        <add id="Pinpoint_Brands::content_logomanager"
+             title="Logo Manager"
+             translate="title"
+             module="Pinpoint_Brands"
+             resource="Pinpoint_Brands::content_logomanager"
+             parent="Magento_Backend::content"
+             sortOrder="30"
+        />
+
+        <add id="Pinpoint_Brands::logomanager_managelogos"
+             title="Manage Logos"
+             translate="title"
+             module="Pinpoint_Brands"
+             resource="Pinpoint_Brands::content_logomanager"
+             parent="Pinpoint_Brands::content_logomanager"
+             sortOrder="1"
+             action="managelogos/view"
+        />
+    </menu>
+</config>

@@ -16,7 +16,6 @@ use Magento\Store\Model\StoreManagerInterface;
  * Integration test for \Magento\CatalogImportExport\Model\Import\Product class.
  *
  * @magentoAppArea adminhtml
- * @magentoDbIsolation disabled
  * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/enable_reindex_schedule.php
  * @magentoDataFixtureBeforeTransaction Magento/Catalog/_files/enable_catalog_product_reindex_schedule.php
  */
@@ -127,12 +126,6 @@ class ProductOptionsTest extends ProductTestBase
         $customOptionValues = $this->getCustomOptionValues($sku);
         $this->createImportModel($pathToFile)->importData();
         $this->assertEquals($customOptionValues, $this->getCustomOptionValues($sku));
-
-        // Cleanup imported products
-        try {
-            $this->productRepository->delete($product);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-        }
     }
 
     /**

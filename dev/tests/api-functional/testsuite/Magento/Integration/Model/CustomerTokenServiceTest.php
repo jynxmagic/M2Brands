@@ -6,10 +6,8 @@
 
 namespace Magento\Integration\Model;
 
-use Magento\Authorization\Model\UserContextInterface;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Framework\Webapi\Rest\Request;
-use Magento\Integration\Api\UserTokenReaderInterface;
 use Magento\Integration\Model\Oauth\Token as TokenModel;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\WebapiAbstract;
@@ -56,11 +54,6 @@ class CustomerTokenServiceTest extends WebapiAbstract
     private $attemptsCountToLockAccount;
 
     /**
-     * @var UserTokenReaderInterface
-     */
-    private $tokenReader;
-
-    /**
      * Setup CustomerTokenService
      */
     protected function setUp(): void
@@ -80,7 +73,6 @@ class CustomerTokenServiceTest extends WebapiAbstract
         /** @var TokenThrottlerConfig $tokenThrottlerConfig */
         $tokenThrottlerConfig = Bootstrap::getObjectManager()->get(TokenThrottlerConfig::class);
         $this->attemptsCountToLockAccount = $tokenThrottlerConfig->getMaxFailuresCount();
-        $this->tokenReader = Bootstrap::getObjectManager()->get(UserTokenReaderInterface::class);
     }
 
     /**
@@ -329,8 +321,15 @@ class CustomerTokenServiceTest extends WebapiAbstract
     private function assertToken($accessToken, $userName, $password)
     {
         $customerData = $this->customerAccountManagement->authenticate($userName, $password);
-        $tokenData = $this->tokenReader->read($accessToken);
-        $this->assertEquals((int) $customerData->getId(), $tokenData->getUserContext()->getUserId());
-        $this->assertEquals(UserContextInterface::USER_TYPE_CUSTOMER, $tokenData->getUserContext()->getUserType());
+        /** @var $this ->tokenCollection \Magento\Integration\Model\ResourceModel\Oauth\Token\Collection */
+        $this->tokenCollection->addFilterByCustomerId($customerData->getId());
+        $isTokenCorrect = false;
+        foreach ($this->tokenCollection->getItems() as $item) {
+            /** @var $item TokenModel */
+            if ($item->getToken() == $accessToken) {
+                $isTokenCorrect = true;
+            }
+        }
+        $this->assertTrue($isTokenCorrect);
     }
 }

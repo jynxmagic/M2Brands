@@ -41,7 +41,7 @@ define([
                 expect(result).toEqual(wdContainer[0]);
                 done();
             });
-            link.trigger('click');
+            link.click();
         });
     });
 });

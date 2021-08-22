@@ -38,7 +38,7 @@ define([
         it('Check cancel action', function () {
             var cancel = spyOn(widget.options.actions, 'cancel');
 
-            jQuery('.modals-overlay').trigger('click');
+            jQuery('.modals-overlay').click();
             expect(widget.options.outerClickHandler).toBeDefined();
             expect(cancel).toHaveBeenCalled();
         });

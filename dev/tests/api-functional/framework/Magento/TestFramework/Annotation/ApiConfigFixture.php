@@ -108,7 +108,7 @@ class ApiConfigFixture extends ConfigFixture
                 } else {
                     $this->setScopeConfigValue(
                         $configPath,
-                        (string)$originalValue,
+                        $originalValue,
                         ScopeInterface::SCOPE_STORES,
                         $storeCode
                     );

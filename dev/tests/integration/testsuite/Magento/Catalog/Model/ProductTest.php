@@ -10,7 +10,6 @@ namespace Magento\Catalog\Model;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
-use Magento\Catalog\Model\Product\Copier;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -20,7 +19,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\Math\Random;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Store\Model\Store;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 
@@ -254,71 +252,30 @@ class ProductTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test Duplicate of product
+     * Test duplicate method
      *
-     * Product assigned to default and custom scope is used. After duplication the copied product
-     * should retain store view specific data
-     *
-     * @magentoDataFixture Magento/Catalog/_files/product_multistore_different_short_description.php
      * @magentoAppIsolation enabled
      * @magentoAppArea adminhtml
-     * @magentoDbIsolation disabled
      */
     public function testDuplicate()
     {
-        $fixtureProductSku = 'simple-different-short-description';
-        $fixtureCustomStoreCode = 'fixturestore';
-        $defaultStoreId = Store::DEFAULT_STORE_ID;
-        /** @var \Magento\Store\Api\StoreRepositoryInterface $storeRepository */
-        $storeRepository = $this->objectManager->create(\Magento\Store\Api\StoreRepositoryInterface::class);
-        $customStoreId = $storeRepository->get($fixtureCustomStoreCode)->getId();
-        $defaultScopeProduct = $this->productRepository->get($fixtureProductSku, true, $defaultStoreId);
-        $customScopeProduct = $this->productRepository->get($fixtureProductSku, true, $customStoreId);
-        /** @var Copier $copier */
+        $this->_model = $this->productRepository->get('simple');
+
+        // fixture
+        /** @var \Magento\Catalog\Model\Product\Copier $copier */
         $copier = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
-            Copier::class
+            \Magento\Catalog\Model\Product\Copier::class
         );
-        $duplicate = $copier->copy($defaultScopeProduct);
-
-        /* Fetch duplicate after cloning */
-        $defaultScopeDuplicate = $this->productRepository->getById($duplicate->getId(), true, $defaultStoreId);
-        $customScopeDuplicate = $this->productRepository->getById($duplicate->getId(), true, $customStoreId);
-
+        $duplicate = $copier->copy($this->_model);
         try {
-            $this->assertNotEquals(
-                $customScopeDuplicate->getId(), $customScopeProduct->getId(),
-                'Duplicate product Id should not equal to source product Id'
-            );
-            $this->assertNotEquals(
-                $customScopeDuplicate->getSku(), $customScopeProduct->getSku(),
-                'Duplicate product SKU should not equal to source product SKU'
-            );
-            $this->assertNotEquals(
-                $customScopeDuplicate->getShortDescription(), $defaultScopeDuplicate->getShortDescription(),
-                'Short description of the duplicated product on custom scope should not equal to ' .
-                'duplicate product description on default scope'
-            );
+            $this->assertNotEmpty($duplicate->getId());
+            $this->assertNotEquals($duplicate->getId(), $this->_model->getId());
+            $this->assertNotEquals($duplicate->getSku(), $this->_model->getSku());
             $this->assertEquals(
-                $customScopeProduct->getShortDescription(), $customScopeDuplicate->getShortDescription(),
-                'Short description of the duplicated product on custom scope should equal to ' .
-                'source product description on custom scope'
+                Status::STATUS_DISABLED,
+                $duplicate->getStatus()
             );
-            $this->assertEquals(
-                $customScopeProduct->getStoreId(), $customScopeDuplicate->getStoreId(),
-                'Store Id of the duplicated product on custom scope should equal to ' .
-                'store Id of source product on custom scope'
-            );
-            $this->assertEquals(
-                $defaultScopeProduct->getStoreId(), $defaultScopeDuplicate->getStoreId(),
-                'Store Id of the duplicated product on default scope should equal to ' .
-                'store Id of source product on default scope'
-            );
-
-            $this->assertEquals(
-                Status::STATUS_DISABLED, $defaultScopeDuplicate->getStatus(),
-                'Duplicate should be disabled'
-            );
-
+            $this->assertEquals(\Magento\Store\Model\Store::DEFAULT_STORE_ID, $duplicate->getStoreId());
             $this->_undo($duplicate);
         } catch (\Exception $e) {
             $this->_undo($duplicate);
@@ -336,9 +293,9 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->_model = $this->productRepository->get('simple');
 
         $this->assertEquals('simple', $this->_model->getSku());
-        /** @var Copier $copier */
+        /** @var \Magento\Catalog\Model\Product\Copier $copier */
         $copier = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
-            Copier::class
+            \Magento\Catalog\Model\Product\Copier::class
         );
         $duplicate = $copier->copy($this->_model);
         $this->assertEquals('simple-5', $duplicate->getSku());
@@ -354,7 +311,7 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
             \Magento\Store\Model\StoreManagerInterface::class
         )->getStore()->setId(
-            Store::DEFAULT_STORE_ID
+            \Magento\Store\Model\Store::DEFAULT_STORE_ID
         );
         $duplicate->delete();
     }

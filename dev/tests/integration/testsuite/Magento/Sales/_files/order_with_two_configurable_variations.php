@@ -73,7 +73,6 @@ foreach ($producLinks as $key => $variationId) {
 
     $orderConfigurableParentItem = clone $orderConfigurableItem;
     $orderConfigurableParentItem->setProductOptions(['info_buyRequest' => $info]);
-    $orderConfigurableParentItem->setSku($simpleProduct->getSku());
     $configurableItems[] = $orderConfigurableParentItem;
 }
 

@@ -33,7 +33,7 @@ class SecureHtmlRendererTemplateTest extends AbstractController
             $content
         );
         $this->assertStringContainsString(
-            '<script src="http&#x3A;&#x2F;&#x2F;my.magento.com&#x2F;static&#x2F;script.js"></script>',
+            '<script src="http&#x3A;&#x2F;&#x2F;my.magento.com&#x2F;static&#x2F;script.js"/>',
             $content
         );
         $this->assertStringContainsString(
