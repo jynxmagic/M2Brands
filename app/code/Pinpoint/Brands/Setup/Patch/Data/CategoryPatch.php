@@ -2,18 +2,22 @@
 
 namespace Pinpoint\Brands\Setup\Patch\Data;
 
-use Magento\Catalog\Model\Product;
+use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\Patch\PatchRevertableInterface;
+use Pinpoint\Brands\Model\ResourceModel\Brand;
+use Zend_Validate_Exception;
 
 class CategoryPatch implements PatchRevertableInterface, DataPatchInterface
 {
 
+    private const BRAND_TABLE = "brand_entity";
     /**
      * @var ModuleDataSetupInterface
      */
@@ -48,32 +52,67 @@ class CategoryPatch implements PatchRevertableInterface, DataPatchInterface
         ];
     }
 
+    /**
+     * @throws Zend_Validate_Exception
+     * @throws LocalizedException
+     */
     public function apply()
     {
         $this->moduleDataSetup->startSetup();
 
+        /**
+         * @var EavSetup $installer
+         */
         $installer = $this->eavSetupFactory->create(["setup" => $this->moduleDataSetup]);
 
+        $staticType = [
+            ["type" => "static"]
+        ];
+
+        $entities = [
+            self::BRAND_TABLE => [
+                "entity_model" => Brand::class,
+                "table" => self::BRAND_TABLE,
+                "attributes" => [
+                    "entity_id" => $staticType,
+                    "title" => $staticType,
+                    "desktop_image" => $staticType,
+                    "mobile_image" => $staticType,
+                    "description" => $staticType,
+                    "enabled" => $staticType
+                ]
+            ]
+        ];
+
+        $installer->installEntities($entities);
+
         $installer->addAttribute(
-            Product::ENTITY,
+            self::BRAND_TABLE,
             "brand_category",
             [
                 "type" => "int",
-                "backend" => "",
+                "backend" => ArrayBackend::class,
                 "frontend" => "",
                 "label" => "Brand Category",
                 "input" => "select",
-                "class" => "",
+                "class" => "select",
                 "source" => Table::class,
                 "global" => ScopedAttributeInterface::SCOPE_GLOBAL,
                 "visible" => true,
                 "required" => false,
-                "default" => ""
+                "user_defined" => true,
+                "default" => "",
+                'option' => [
+                    'values' => [
+                        0 => 'Default'
+                    ]
+                ],
             ]
         );
 
         $this->moduleDataSetup->endSetup();
     }
+
 
     public function revert()
     {
@@ -81,7 +120,7 @@ class CategoryPatch implements PatchRevertableInterface, DataPatchInterface
 
         $installer = $this->eavSetupFactory->create(["setup" => $this->moduleDataSetup]);
 
-        $installer->removeAttribute(Product::ENTITY, "brand_category");
+        $installer->removeAttribute(self::BRAND_TABLE, "brand_category");
 
         $this->moduleDataSetup->endSetup();
     }
