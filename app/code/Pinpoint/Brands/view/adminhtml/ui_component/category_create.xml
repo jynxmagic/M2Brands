@@ -28,7 +28,13 @@
     <dataSource name="brand_category_data_source">
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
+                <item name="submit_url" xsi:type="url" path="managelogos/category/save"/>
                 <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="submit_url" xsi:type="url" path="managelogos/category/save"/>
             </item>
         </argument>
         <dataProvider class="Pinpoint\Brands\Model\Category\DataProvider" name="brand_category_data_source">
@@ -40,13 +46,6 @@
     </dataSource>
     <fieldset name="general"
               component="Magento_Catalog/js/components/visible-on-option/fieldset" sortOrder="15">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="valuesForOptions" xsi:type="array">
-                    <item name="multiselect" xsi:type="string">multiselect</item>
-                </item>
-            </item>
-        </argument>
         <settings>
             <collapsible>false</collapsible>
             <opened>true</opened>

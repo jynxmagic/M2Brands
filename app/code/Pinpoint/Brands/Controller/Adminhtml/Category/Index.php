@@ -60,7 +60,7 @@ class Index extends Action implements HttpGetActionInterface
 
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->prepend(__('Edit Brand Category Attribute'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Create New Category Attribute'));
 
         return $resultPage;
     }
