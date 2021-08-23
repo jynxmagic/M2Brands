@@ -55,7 +55,7 @@ class Logo extends Template implements BlockInterface
         if ($this->getData("brand_category") != null) {
             $categoryFilter = $this->filterFactory->create();
             $categoryFilter->setField("brand_category_option_id");
-            $categoryFilter->setValue($this->getData("category"));
+            $categoryFilter->setValue($this->getData("brand_category"));
             $this->searchCriteriaBuilder->addFilter($categoryFilter);
         }
         $criteria = $this->searchCriteriaBuilder->create();
