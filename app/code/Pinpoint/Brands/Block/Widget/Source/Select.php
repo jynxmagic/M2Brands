@@ -1,6 +1,6 @@
 <?php
 
-namespace Pinpoint\Brands\Block\Widget\Config\Source;
+namespace Pinpoint\Brands\Block\Widget\Source;
 
 use Magento\Eav\Model\Config;
 use Magento\Framework\Data\OptionSourceInterface;
@@ -23,7 +23,7 @@ class Select implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $options = $this->eavConfig->getAttribute("brand_entity", "category")->getSource()->getAllOptions();
+        $options = $this->eavConfig->getAttribute("brand_entity", "brand_category")->getSource()->getAllOptions();
 
         return $options;
     }
