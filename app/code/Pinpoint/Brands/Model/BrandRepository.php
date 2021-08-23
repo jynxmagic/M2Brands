@@ -9,6 +9,7 @@ use Magento\Framework\Api\SearchCriteriaInterfaceFactory;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Pinpoint\Brands\Api\BrandRepositoryInterface;
+use Pinpoint\Brands\Api\Collection;
 use Pinpoint\Brands\Api\Data\BrandInterface;
 use Pinpoint\Brands\Api\Data\BrandSearchResultInterfaceFactory;
 use Pinpoint\Brands\Model\BrandFactory;
@@ -126,5 +127,11 @@ class BrandRepository implements BrandRepositoryInterface
     public function create()
     {
         return $this->brandFactory->create();
+    }
+
+    public function getUnfilteredList()
+    {
+        $collection = $this->brandCollectionFactory->create();
+        return $collection;
     }
 }

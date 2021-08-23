@@ -106,6 +106,16 @@ class Brand extends AbstractModel implements BrandInterface, IdentityInterface
         return $this->getData("enabled");
     }
 
+    public function getBrandCategoryOptionId()
+    {
+        return $this->getData("brand_category_option_id");
+    }
+
+    public function setBrandCategoryOptionId($data)
+    {
+        $this->setData("brand_category_option_id", $data);
+    }
+
     protected function _construct()
     {
         $this->_init(ResourceModel\Brand::class);

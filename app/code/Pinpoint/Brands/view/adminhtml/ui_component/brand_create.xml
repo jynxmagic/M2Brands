@@ -183,5 +183,33 @@
                 </checkbox>
             </formElements>
         </field>
+
+        <field name="brand_category_option_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <tooltip>
+                    <link>*/category/index</link>
+                    <description>Need to add/delete categories?</description>
+                </tooltip>
+                <label translate="true">Category</label>
+                <dataScope>brand_category_option_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Pinpoint\Brands\Ui\Component\Form\Category\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
     </fieldset>
 </form>
