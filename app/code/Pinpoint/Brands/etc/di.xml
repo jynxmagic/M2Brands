@@ -5,6 +5,19 @@
     <preference for="Pinpoint\Brands\Api\Data\BrandInterface" type="Pinpoint\Brands\Model\Brand"/>
     <preference for="Pinpoint\Brands\Api\Data\BrandSearchResultInterface" type="Magento\Framework\Api\SearchResults"/>
 
+    <!-- COMMAND -->
+    <type name="Pinpoint\Brands\Command\ExportBrandsCsv">
+        <arguments>
+            <argument name="name" xsi:type="string">brands:export:csv</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="brands_export_csv" xsi:type="object">Pinpoint\Brands\Command\ExportBrandsCsv</item>
+            </argument>
+        </arguments>
+    </type>
 
     <type name="Magento\Framework\Model\Entity\RepositoryFactory">
         <arguments>
