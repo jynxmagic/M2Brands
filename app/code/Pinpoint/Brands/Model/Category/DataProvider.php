@@ -72,7 +72,6 @@ class DataProvider extends AbstractDataProvider
         return $meta;
     }
 
-
     /**
      * Get data
      *

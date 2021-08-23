@@ -5,6 +5,10 @@ namespace Pinpoint\Brands\Model\Brand;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Rss\DataProviderInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\UrlInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Pinpoint\Brands\Api\BrandRepositoryInterface;
 use Pinpoint\Brands\Api\Data\BrandInterface;
@@ -12,7 +16,7 @@ use Pinpoint\Brands\Model\BrandFactory;
 use Pinpoint\Brands\Model\ResourceModel\Brand\Collection;
 use Pinpoint\Brands\Model\ResourceModel\Brand\CollectionFactory;
 
-class DataProvider extends AbstractDataProvider
+class DataProvider extends AbstractDataProvider implements DataProviderInterface
 {
     /**
      * @var Collection
@@ -27,12 +31,11 @@ class DataProvider extends AbstractDataProvider
      * @var array
      */
     protected $loadedData;
-
+    protected $storeManager;
     /**
      * @var BrandRepositoryInterface
      */
     private $brandRepository;
-
     /**
      * @var RequestInterface
      */
@@ -48,6 +51,7 @@ class DataProvider extends AbstractDataProvider
         $requestFieldName,
         CollectionFactory $brandCollectionFactory,
         DataPersistorInterface $dataPersistor,
+        StoreManagerInterface $storeManager,
         array $meta = [],
         array $data = [],
         ?RequestInterface $request = null,
@@ -58,6 +62,7 @@ class DataProvider extends AbstractDataProvider
         $this->collection = $brandCollectionFactory->create();
         $this->dataPersistor = $dataPersistor;
         $this->meta = $this->prepareMeta($this->meta);
+        $this->storeManager = $storeManager;
         $this->request = $request ?? ObjectManager::getInstance()->get(RequestInterface::class);
         $this->brandRepository = $brandRepository ?? ObjectManager::getInstance()->get(BrandRepositoryInterface::class);
         $this->brandFactory = $brandFactory ?: ObjectManager::getInstance()->get(BrandFactory::class);
@@ -74,11 +79,31 @@ class DataProvider extends AbstractDataProvider
         return $meta;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getMeta()
+    {
+        $meta = parent::getMeta();
+
+        return $meta;
+    }
+
+    public function isAllowed()
+    {
+        return true;
+    }
+
+    public function getRssData()
+    {
+        return $this->getData();
+    }
 
     /**
      * Get data
      *
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getData()
     {
@@ -88,29 +113,66 @@ class DataProvider extends AbstractDataProvider
 
         $items = $this->getCollection()->getItems();
 
-        foreach ($items as $block) {
-            $this->loadedData[$block->getId()]["brand"] = $block->getData();
-        }
+        foreach ($items as $item) {
+            $this->loadedData[$item->getId()] = $item->getData();
+            $desktopImage = $item->getData("desktop_image");
+            $mobileImage = $item->getData("mobile_image");
 
-        $data = $this->dataPersistor->get('brand');
-        if (!empty($data)) {
-            $block = $this->getCollection()->getNewEmptyItem();
-            $block->setData($data);
-            $this->loadedData[$block->getId()] = $block->getData();
-            $this->dataPersistor->clear("brand");
+            if ($desktopImage) {
+                $loadedImage = $this->convertImageUriToArray($desktopImage);
+                $this->loadedData[$item->getId()]["desktop_image"] = $loadedImage;
+            }
+            if ($mobileImage) {
+                $loadedImage = $this->convertImageUriToArray($mobileImage);
+                $this->loadedData[$item->getId()]["mobile_image"] = $loadedImage;
+            }
         }
 
         return $this->loadedData;
     }
 
     /**
-     * @inheritDoc
+     * @throws NoSuchEntityException
      */
-    public function getMeta()
+    private function convertImageUriToArray($imageUri)
     {
-        $meta = parent::getMeta();
+        $tmp[0]['name'] = $imageUri;
+        $tmp[0]['url'] = $this->getImageUrlForImage($imageUri);
 
-        return $meta;
+        return $tmp;
+    }
+
+    /**
+     * @throws NoSuchEntityException
+     */
+    public function getImageUrlForImage($img)
+    {
+        if ($img == null) {
+            return "";
+        }
+        $mediaUrl = $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
+        $mediaUrl .= $img;
+        return $mediaUrl;
+    }
+
+    public function getCacheKey()
+    {
+        return "category_create_form";
+    }
+
+    public function getCacheLifetime()
+    {
+        return -1;
+    }
+
+    public function getFeeds()
+    {
+        return $this->getData();
+    }
+
+    public function isAuthRequired()
+    {
+        return false;
     }
 
     /**
