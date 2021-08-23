@@ -3,9 +3,8 @@
 namespace Pinpoint\Brands\Model\Category;
 
 use Magento\Eav\Api\AttributeRepositoryInterface;
-use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Config;
-use Magento\Eav\Model\ResourceModel\Attribute\CollectionFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
@@ -44,17 +43,17 @@ class DataProvider extends AbstractDataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        CollectionFactory $attributeCollectionFactory,
         DataPersistorInterface $dataPersistor,
         Config $eavConfig,
+        CollectionFactory $attributeCollectionFactory,
         array $meta = [],
         array $data = [],
         ?RequestInterface $request = null,
         ?AttributeRepositoryInterface $attributeRepository = null
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->collection = $attributeCollectionFactory->create();
         $this->dataPersistor = $dataPersistor;
+        $this->collection = $attributeCollectionFactory->create();
         $this->meta = $this->prepareMeta($this->meta);
         $this->request = $request;
         $this->attributeRepository = $attributeRepository;
@@ -76,29 +75,24 @@ class DataProvider extends AbstractDataProvider
     /**
      * Get data
      *
-     * @return array
+     * @return String
      */
     public function getData()
     {
+        return "";
         if (isset($this->loadedData)) {
-            return $this->loadedData;
+            return implode($this->loadedData);
         }
 
-        $items = $this->getCollection()->getItems();
+        $category = $this->$this->attributeRepository->get("brand_entity", "brand_category");
+        $items = $category->getOptions();
 
         foreach ($items as $block) {
-            $this->loadedData[$block->getId()]["brand_category"] = $block->getData();
+            $this->loadedData[$block->getValue()]["brand_category"] = $block->getLabel();
         }
 
-        $data = $this->dataPersistor->get('brand_category');
-        if (!empty($data)) {
-            $block = $this->getCollection()->getNewEmptyItem();
-            $block->setData($data);
-            $this->loadedData[$block->getId()] = $block->getData();
-            $this->dataPersistor->clear("brand_category");
-        }
 
-        return $this->loadedData;
+        return implode($this->loadedData);
     }
 
     /**
@@ -114,10 +108,10 @@ class DataProvider extends AbstractDataProvider
     /**
      * Return current page
      *
-     * @return AttributeInterface
+     * @return string
      */
     private function getCurrentCategory()
     {
-        return $this->$this->attributeRepository->get("brand_entity", "brand_category");
+        return "brand_category";
     }
 }

@@ -3,8 +3,8 @@
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">brand_create.brand_category_data_source</item>
-            <item name="deps" xsi:type="string">brand_create.brand_category_data_source</item>
+            <item name="provider" xsi:type="string">category_create.brand_category_data_source</item>
+            <item name="deps" xsi:type="string">category_create.brand_category_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">Create Brand Category</item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
@@ -12,18 +12,17 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Pinpoint\Brands\Block\Adminhtml\Edit\SaveButton"/>
-            <button name="delete" class="Pinpoint\Brands\Block\Adminhtml\Edit\DeleteButton"/>
+            <button name="save" class="Pinpoint\Brands\Block\Adminhtml\Edit\Category\SaveButton"/>
             <button name="back">
                 <url path="managelogos/view/index/"/>
                 <class>back</class>
                 <label translate="true">Back</label>
             </button>
         </buttons>
-        <namespace>brand_create</namespace>
+        <namespace>category_create</namespace>
         <dataScope>data</dataScope>
         <deps>
-            <dep>brand_create.brand_category_data_source</dep>
+            <dep>category_create.brand_category_data_source</dep>
         </deps>
     </settings>
     <dataSource name="brand_category_data_source">
@@ -34,21 +33,29 @@
         </argument>
         <dataProvider class="Pinpoint\Brands\Model\Category\DataProvider" name="brand_category_data_source">
             <settings>
-                <requestFieldName>entity_id</requestFieldName>
-                <primaryFieldName>entity_id</primaryFieldName>
+                <requestFieldName>brand_category</requestFieldName>
+                <primaryFieldName>brand_category</primaryFieldName>
             </settings>
         </dataProvider>
     </dataSource>
-    <fieldset name="general" sortOrder="10">
+    <fieldset name="general"
+              component="Magento_Catalog/js/components/visible-on-option/fieldset" sortOrder="15">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="valuesForOptions" xsi:type="array">
+                    <item name="multiselect" xsi:type="string">multiselect</item>
+                </item>
+            </item>
+        </argument>
         <settings>
             <collapsible>false</collapsible>
             <opened>true</opened>
             <label translate="true">General</label>
         </settings>
-        <field name="title" formElement="input">
+        <field name="brand_category" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">brand</item>
+                    <item name="source" xsi:type="string">brand_create</item>
                     <item name="sortOrder" xsi:type="number">1</item>
                 </item>
             </argument>
@@ -56,10 +63,10 @@
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
-                <label translate="true">Title</label>
+                <label translate="true">Category</label>
                 <dataType>text</dataType>
                 <visible>true</visible>
-                <dataScope>title</dataScope>
+                <dataScope>brand_category</dataScope>
             </settings>
         </field>
     </fieldset>
