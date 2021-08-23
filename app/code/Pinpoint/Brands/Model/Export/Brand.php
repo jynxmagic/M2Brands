@@ -46,9 +46,10 @@ class Brand
 
         $brandCollection = $this->_getEntityCollection();
 
-        $i = 1;
+        $i = 0;
         $c = count($brandCollection);
         foreach ($brandCollection as $brand) {
+            $i++;
             echo "Exporting $i of $c..." . PHP_EOL;
             $item = [];
             foreach ($columns as $attribute) {
