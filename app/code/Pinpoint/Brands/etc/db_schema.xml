@@ -12,6 +12,7 @@
                 default="No alt text provided."/>
         <column xsi:type="varchar" name="description" nullable="true" length="255" comment="description of company"
                 default="No description provided."/>
+        <column xsi:type="int" name="brand_category_option_id" nullable="false" comment="Brand Category Option ID"/>
         <column xsi:type="smallint" name="enabled" nullable="true" default="1" comment="is logo enabled?"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>

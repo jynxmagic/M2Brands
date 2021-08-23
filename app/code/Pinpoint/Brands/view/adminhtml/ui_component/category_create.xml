@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">brand_create.brand_category_data_source</item>
+            <item name="deps" xsi:type="string">brand_create.brand_category_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Create Brand Category</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="spinner" xsi:type="string">columns</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Pinpoint\Brands\Block\Adminhtml\Edit\SaveButton"/>
+            <button name="delete" class="Pinpoint\Brands\Block\Adminhtml\Edit\DeleteButton"/>
+            <button name="back">
+                <url path="managelogos/view/index/"/>
+                <class>back</class>
+                <label translate="true">Back</label>
+            </button>
+        </buttons>
+        <namespace>brand_create</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>brand_create.brand_category_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="brand_category_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider class="Pinpoint\Brands\Model\Category\DataProvider" name="brand_category_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <collapsible>false</collapsible>
+            <opened>true</opened>
+            <label translate="true">General</label>
+        </settings>
+        <field name="title" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <label translate="true">Title</label>
+                <dataType>text</dataType>
+                <visible>true</visible>
+                <dataScope>title</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+</form>

@@ -79,4 +79,15 @@ interface BrandInterface
      * @return bool
      */
     public function getEnabled();
+
+    /**
+     * @return int
+     */
+    public function getBrandCategoryOptionId();
+
+    /**
+     * @param int $data
+     * @return void
+     */
+    public function setBrandCategoryOptionId($data);
 }

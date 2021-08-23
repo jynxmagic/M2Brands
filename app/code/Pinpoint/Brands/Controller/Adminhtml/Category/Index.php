@@ -1,11 +1,6 @@
 <?php
-/**
- *
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 
-namespace Magento\Catalog\Controller\Adminhtml\Product\Attribute;
+namespace Pinpoint\Brands\Controller\Adminhtml\Category;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -16,10 +11,9 @@ use Magento\Framework\App\Action\HttpGetActionInterface as HttpGetActionInterfac
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
-use Magento\Framework\View\Result\ResultPageFactory;
-use Pinpoint\Brands\Model\Brand;
+use Magento\Framework\View\Result\PageFactory;
 
-class Category extends Action implements HttpGetActionInterface
+class Index extends Action implements HttpGetActionInterface
 {
     protected $resultPageFactory;
     protected $coreRegistry;
@@ -29,7 +23,7 @@ class Category extends Action implements HttpGetActionInterface
 
     public function __construct(
         Context                                           $context,
-        ResultPageFactory                                 $resultPageFactory,
+        PageFactory                                       $resultPageFactory,
         Registry                                          $coreRegistry,
         Entity                                            $entity,
         \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavAttribute
@@ -43,7 +37,7 @@ class Category extends Action implements HttpGetActionInterface
 
     public function dispatch(RequestInterface $request)
     {
-        $this->_entityTypeId = $this->entity->setType(Brand::class)->getTypeId();
+        $this->_entityTypeId = $this->entity->setType("brand_entity")->getTypeId();
         return parent::dispatch($request);
     }
 
@@ -67,6 +61,7 @@ class Category extends Action implements HttpGetActionInterface
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('Edit Brand Category Attribute'));
+
         return $resultPage;
     }
 }

@@ -17,6 +17,10 @@
     </argument>
     <settings>
         <buttons>
+            <button name="catadd">
+                <url path="*/category/index"/>
+                <label translate="true">Add new brand category</label>
+            </button>
             <button name="add">
                 <url path="*/create"/>
                 <class>primary</class>

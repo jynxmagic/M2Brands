@@ -184,7 +184,7 @@
             </formElements>
         </field>
 
-        <field name="brand_category" formElement="multiselect">
+        <field name="brand_category_option_id" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">brand</item>
@@ -197,18 +197,18 @@
                 </validation>
                 <dataType>int</dataType>
                 <tooltip>
-                    <link>/managelogos/edit/category</link>
+                    <link>*/category/index</link>
                     <description>Need to add/delete categories?</description>
                 </tooltip>
-                <label translate="true">Categories</label>
-                <dataScope>brand_category</dataScope>
+                <label translate="true">Category</label>
+                <dataScope>brand_category_option_id</dataScope>
             </settings>
             <formElements>
-                <multiselect>
+                <select>
                     <settings>
                         <options class="Pinpoint\Brands\Ui\Component\Form\Category\Options"/>
                     </settings>
-                </multiselect>
+                </select>
             </formElements>
         </field>
     </fieldset>

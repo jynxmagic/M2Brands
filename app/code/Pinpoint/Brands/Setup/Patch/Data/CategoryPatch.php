@@ -104,7 +104,9 @@ class CategoryPatch implements PatchRevertableInterface, DataPatchInterface
                 "default" => "",
                 'option' => [
                     'values' => [
-                        0 => 'Default'
+                        0 => 'Default',
+                        1 => "Example Category 1",
+                        2 => "Example Category 2"
                     ]
                 ],
             ]
