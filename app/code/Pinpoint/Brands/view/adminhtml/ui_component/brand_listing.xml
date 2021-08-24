@@ -34,7 +34,6 @@
         </settings>
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
-        <filterSearch name="fulltext"/>
         <massaction name="listing_massaction">
             <action name="delete">
                 <settings>
