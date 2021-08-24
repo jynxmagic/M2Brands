@@ -7,6 +7,7 @@ use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteriaInterfaceFactory;
 use Magento\Framework\EntityManager\EntityManager;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Pinpoint\Brands\Api\BrandRepositoryInterface;
 use Pinpoint\Brands\Api\Collection;
@@ -57,6 +58,44 @@ class BrandRepository implements BrandRepositoryInterface
         $this->collectionProcessor = $collectionProcessor;
         $this->entityManager = $entityManager;
         $this->imageUploader = $imageUploader;
+    }
+
+    /**
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
+     * @throws Exception
+     */
+    public function update($brand)
+    {
+        $oldBrand = $this->getByEntityId($brand->getEntityId());
+
+        $oldData = $oldBrand->getData();
+        $newData = $brand->getData();
+
+        foreach ($newData as $k => $v) {
+            if ($k == "desktop_image" || $k == "mobile_image") {
+                //update img
+                //check for new image and pull from tmp if new image
+                $v2 = $v[0]["name"];
+                if ($oldData[$k] != $v2) {
+                    $this->imageUploader->moveFileFromTmp($v2);
+
+                    $img_uri = $this->imageUploader->getFilePath(
+                        $this->imageUploader->getBasePath(),
+                        $v2
+                    );
+                    $oldBrand->setData($k, $img_uri);
+                }
+            } else {
+                //update others
+                if (isset($oldData[$k]) && $oldData[$k] != $v) {
+                    $oldBrand->setData($k, $v);
+
+                }
+            }
+        }
+
+        $this->entityManager->save($oldBrand);
     }
 
     /**

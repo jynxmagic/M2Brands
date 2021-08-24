@@ -7,6 +7,7 @@ use Magento\Eav\Model\Config;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class DataProvider extends AbstractDataProvider
@@ -71,28 +72,16 @@ class DataProvider extends AbstractDataProvider
         return $meta;
     }
 
-
     /**
      * Get data
      *
-     * @return String
+     * @return array
+     * @throws LocalizedException
      */
     public function getData()
     {
-        return "";
-        if (isset($this->loadedData)) {
-            return implode($this->loadedData);
-        }
-
-        $category = $this->$this->attributeRepository->get("brand_entity", "brand_category");
-        $items = $category->getOptions();
-
-        foreach ($items as $block) {
-            $this->loadedData[$block->getValue()]["brand_category"] = $block->getLabel();
-        }
-
-
-        return implode($this->loadedData);
+        $attribute = $this->eavConfig->getAttribute('brand_entity', 'brand_category');
+        return $attribute->getSource()->getAllOptions();
     }
 
     /**

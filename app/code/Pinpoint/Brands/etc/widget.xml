@@ -3,11 +3,11 @@
     <widget class="Pinpoint\Brands\Block\Widget\Logo" id="logo_widget">
         <label>Logos</label>
         <description>List logo images.</description>
-        <!--<parameters>
-            <parameter source_model="Pinpoint\Brands\Block\Widget\Source\Select" name="category" required="false"
-                       xsi:type="select" visible="true">
+        <parameters>
+            <parameter source_model="Pinpoint\Brands\Block\Widget\Source\Select" name="brand_category" xsi:type="select"
+                       visible="true" required="false" sort_order="10">
                 <label translate="true">Category</label>
             </parameter>
-        </parameters> -->
+        </parameters>
     </widget>
 </widgets>

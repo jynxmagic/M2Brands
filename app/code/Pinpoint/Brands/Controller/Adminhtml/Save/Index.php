@@ -56,8 +56,15 @@ class Index extends Action implements HttpPostActionInterface
         try {
             $brand = $this->brandRepository->create();
             $data = $this->getRequest()->getParams();
+
             $brand->setData($data);
-            $this->brandRepository->save($brand);
+            if ($brand->getData("entity_id")) {
+                //update
+                $this->brandRepository->update($brand);
+            } else {
+                //new
+                $this->brandRepository->save($brand);
+            }
             $this->messageManager->addSuccessMessage(__('Brand saved successfully.'));
             $result->setPath("managelogos/view");
         } catch (Exception $e) {

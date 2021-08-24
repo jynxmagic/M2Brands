@@ -48,13 +48,18 @@ class Logo extends Template implements BlockInterface
         /**
          * @var Filter $filter
          */
-        $filter = $this->filterFactory->create();
-        $filter->setField("enabled");
-        $filter->setValue("true");
-        $this->searchCriteriaBuilder->addFilter($filter);
+        $enabledFilter = $this->filterFactory->create();
+        $enabledFilter->setField("enabled");
+        $enabledFilter->setValue("1");
+        $this->searchCriteriaBuilder->addFilter($enabledFilter);
+        if ($this->getData("brand_category") != null) {
+            $categoryFilter = $this->filterFactory->create();
+            $categoryFilter->setField("brand_category_option_id");
+            $categoryFilter->setValue($this->getData("brand_category"));
+            $this->searchCriteriaBuilder->addFilter($categoryFilter);
+        }
         $criteria = $this->searchCriteriaBuilder->create();
         $brands = $this->brandRepositoryInterface->getList($criteria)->getItems();
-
         return $brands;
     }
 

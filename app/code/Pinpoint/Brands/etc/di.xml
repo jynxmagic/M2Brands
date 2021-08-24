@@ -19,6 +19,7 @@
         </arguments>
     </type>
 
+    <!-- ENTITY MANAGER -->
     <type name="Magento\Framework\Model\Entity\RepositoryFactory">
         <arguments>
             <argument name="entities" xsi:type="array">
@@ -48,6 +49,8 @@
         </arguments>
     </type>
 
+
+    <!-- ADMINHTML GRID SOURCE -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -65,6 +68,7 @@
         </arguments>
     </virtualType>
 
+    <!-- ADMINHTML IMAGE UPLOAD -->
     <type name="Pinpoint\Brand\Controller\Adminhtml\Image\Upload">
         <arguments>
             <argument name="imageUploader" xsi:type="object">Pinpoint\Brands\Imageuploader</argument>
