@@ -38,4 +38,6 @@ interface BrandRepositoryInterface
     public function getUnfilteredList();
 
     public function create();
+
+    public function update($brand);
 }
